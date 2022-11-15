@@ -3,40 +3,26 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="com.ssafy.happyhouse.board.model.mapper.BoardMapper">
-
 	
-	<insert id="writeArticle" parameterType="boardDto">
+	<resultMap type="boardDto" id="article">
+		<result column="articleno" property="articleno"/>
+		<result column="userid" property="userid"/>
+		<result column="subject" property="subject"/>	
+		<result column="hit" property="hit"/>
+		<result column="regtime" property="regtime"/>
+	</resultMap>
+	
+	<resultMap  type="boardDto" id="viewArticle" extends="board">
+		<result column="content" property="content"/>
+		<collection property="comments" column="articleno" javaType="list" ofType="commentDto" select="commentList"/>
+	</resultMap>
+	
+	<insert id="writeArticle">
 		insert into board (userid, subject, content, hit, regtime)
 		values (#{userid}, #{subject}, #{content}, 0, now())
 	</insert>
 	
-	<!-- ============ 댓글 작성 및 조회 =============== -->
-	
-	<insert id="writeComment" parameterType="commentDto">
-		insert into comment (userid, content, regtime, articleno)
-		values (#{userid}, #{content}, now(), #{articleno});
-	</insert>
-		
-	<resultMap type="boardDto" id="boardDetail">
-		<result column="articleno" property="articleno"/>
-		<result column="userid" property="userid"/>
-		<result column="subject" property="subject"/>		
-		<result column="content" property="content"/>
-		<result column="hit" property="hit"/>
-		<result column="regtime" property="regtime"/>
-		<collection property="comments" column="articleno" javaType="list" ofType="commentDto" select="commentList"/>
-	</resultMap>
-	
-	<select id="commentList" resultType="commentDto">
-		select *
-		from comment
-		where articleno = #{articleNo}
-	</select>
-	
-	<!-- ========================================== -->
-	
-	
-	<select id="listArticle" parameterType="map" resultType="boardDto">
+	<select id="listArticle" resultMap="article">
 		select articleno, userid, subject, hit,
 				case when date_format(regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
 				then date_format(regtime, '%H:%i:%s')
@@ -55,7 +41,7 @@
 		limit #{start}, #{spp}
 	</select>
 	
-	<select id="getTotalCount" parameterType="map" resultType="int">
+	<select id="getTotalCount" resultType="int">
 		select count(articleno)
 		from board
 		<if test="word != null and word != ''">
@@ -68,34 +54,47 @@
 		</if>
 	</select>
 	
-	<select id="getArticle" parameterType="int" resultMap="boardDetail">
+	<select id="getArticle" resultMap="viewArticle">
 		select articleno, userid, subject, content, hit, regtime
 		from board
 		where articleno = #{articleno}
 	</select>
 	
 	
-	<update id="updateHit" parameterType="int">
+	<update id="updateHit">
 		update board
 		set hit = hit + 1
 		where articleno = #{articleno}
 	</update>
 	
-	<update id="modifyArticle" parameterType="boardDto">
+	<update id="modifyArticle"
 		update board
 		set subject = #{subject}, content = #{content}
 		where articleno = #{articleno}
 	</update>
 	
-	<delete id="deleteMemo" parameterType="int">
+	<delete id="deleteMemo">
 		delete from memo
 		where articleno = #{articleno}
 	</delete>
 	
-	<delete id="deleteArticle" parameterType="int">
+	<delete id="deleteArticle">
 		delete from board
 		where articleno = #{articleno}
 	</delete>
 
+	<!-- ============ 댓글 작성 및 조회 =============== -->
+	<insert id="writeComment">
+		insert into comment (userid, content, regtime, articleno)
+		values (#{userid}, #{content}, now(), #{articleno});
+	</insert>
+	
+	<select id="commentList" resultType="commentDto">
+		select *
+		from comment
+		where articleno = #{articleNo}
+	</select>
+	<!-- ========================================== -->
+	
 </mapper>
 

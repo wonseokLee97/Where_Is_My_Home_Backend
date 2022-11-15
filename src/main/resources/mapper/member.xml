@@ -39,14 +39,14 @@
 		where userId = #{userId}
 	</select>
 	
-	<update id="modifyMember" parameterType="member">
+	<update id="modifyMember">
 		update member
 		set 
-		userName = #{userName},
-		userPwd = #{userPwd},
-		emailId = #{emailId},
-		emailDomain = #{emailDomain}
-		where userId = #{userId}
+			userName = #{userName},
+			userPwd = #{userPwd},
+			emailId = #{emailId},
+			emailDomain = #{emailDomain}
+			where userId = #{userId}
 	</update>
 	
 	<delete id="deleteMember">
