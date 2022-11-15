@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="/common/header.jsp"%>
-<%@ include file="/common/styleheader.jsp"%>
+<%@ include file="/WEB-INF/views/common/header.jsp"%>
+<%@ include file="/WEB-INF/views/common/styleheader.jsp"%>
 
 
 <h2 class="my-3 py-3 shadow-sm bg-light text-center">${keytarget} 코로나 선별 진료소 정보</h2>
@@ -36,4 +36,4 @@
 
 
 
-<%@ include file="/common/footer.jsp"%>
+<%@ include file="/WEB-INF/views/common/footer.jsp"%>

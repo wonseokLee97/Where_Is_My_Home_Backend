@@ -28,8 +28,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Member loginMember(Map<String, String> map) throws Exception{
-		return memberMapper.loginMember(map);
+	public Member loginMember(Member member) throws Exception{
+		return memberMapper.loginMember(member);
 	}
 
 	@Override

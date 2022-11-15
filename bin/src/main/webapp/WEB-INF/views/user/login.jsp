@@ -58,7 +58,9 @@
 									<input type="text"
 										class="form-control form-control-user form-group" id="userid"
 										name="userid" aria-describedby="emailHelp" placeholder="아이디"
-										required autofocus value="${svid}"> <input
+										required autofocus value="${svid}"> 
+										
+									<input
 										type="password"
 										class="form-control form-control-user form-group" id="userpwd"
 										name="userpwd" placeholder="비밀번호" required>
@@ -69,9 +71,9 @@
 								<div class="text-danger mb-2">${msg}</div>
 								<div class="col-auto text-center">
 									<a class="small" id="btn-mv-join"
-										href="${root}/user?act=mvfindpw">비밀번호 찾기</a>
+										href="${root}/user/findpw">비밀번호 찾기</a>
 									&nbsp;&nbsp;&nbsp; <a class="small" id="btn-mv-findpw"
-										href="${root}/user?act=mvjoin">회원가입</a>
+										href="${root}/user/join">회원가입</a>
 								</div>
 							</div>
 						</div>
@@ -83,7 +85,7 @@
 	<script>
 		document.querySelector("#btn-mv-join").addEventListener("click",
 				function() {
-					location.href = "${root}/user?act=mvjoin";
+					location.href = "${root}/user/join";
 				});
 
 		document.querySelector("#btn-login").addEventListener("click",
@@ -96,13 +98,22 @@
 						return;
 					} else {
 						let form = document.querySelector("#form-login");
-						form.setAttribute("action", "${root}/user");
+						form.setAttribute("action", "${root}/user/login");
 						form.submit();
 					}
+/* 					const res = await fetch("");
+					const data = await res.json();
+					if(data){
+						얼럿
+						location.href="/"
+					}else */
+					
 				});
+				
+		
 		document.querySelector("#btn-mv-findpw").addEventListener("click",
 				function() {
-					location.href = "${root}/user?act=mvfindpw";
+					location.href = "${root}/user/findpw";
 				});
 	</script>
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>

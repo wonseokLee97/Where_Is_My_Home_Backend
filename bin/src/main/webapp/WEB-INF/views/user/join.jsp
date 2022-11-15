@@ -26,7 +26,7 @@
 </head>
 <body id="page-top">
 
-	<%@ include file="/common/styleheader.jsp"%>
+	<%@ include file="/WEB-INF/views/common/styleheader.jsp"%>
 	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-lg-8 col-md-10 col-sm-12">
@@ -39,12 +39,12 @@
 					<input type="hidden" name="act" value="join">
 					<div class="mb-3">
 						<label for="username" class="form-label">이름 : </label> <input
-							type="text" class="form-control" id="username" name="username"
+							type="text" class="form-control" id="userName" name="userName"
 							placeholder="이름..." />
 					</div>
 					<div class="mb-3">
 						<label for="userid" class="form-label">아이디 : </label> <input
-							type="text" class="form-control" id="userid" name="userid"
+							type="text" class="form-control" id="userId" name="userId"
 							placeholder="아이디..." />
 					</div>
 					<button type="button" class="btn btn-primary" id="idcheck">아이디
@@ -53,7 +53,7 @@
 					<div id="idcheck-recommand"></div>
 					<div class="mb-3">
 						<label for="userpwd" class="form-label">비밀번호 : </label> <input
-							type="password" class="form-control" id="userpwd" name="userpwd"
+							type="password" class="form-control" id="userPwd" name="userPwd"
 							placeholder="비밀번호..." />
 					</div>
 					<div class="mb-3">
@@ -64,10 +64,10 @@
 					<div class="mb-3">
 						<label for="emailid" class="form-label">이메일 : </label>
 						<div class="input-group">
-							<input type="text" class="form-control" id="emailid"
-								name="emailid" placeholder="이메일아이디" /> <span
+							<input type="text" class="form-control" id="emailId"
+								name="emailId" placeholder="이메일아이디" /> <span
 								class="input-group-text">@</span> <select class="form-select"
-								id="emaildomain" name="emaildomain" aria-label="이메일 도메인 선택">
+								id="emailDomain" name="emailDomain" aria-label="이메일 도메인 선택">
 								<option selected>선택</option>
 								<option value="ssafy.com">싸피</option>
 								<option value="google.com">구글</option>
@@ -88,7 +88,8 @@
 	<script>
       let isUseId = false;
       document.querySelector("#idcheck").addEventListener("click", function () {
-    	 let userid = document.querySelector("#userid").value;
+    	 let userid = document.querySelector("#userId").value;
+    	 console.log(userid);
     	 let resultDiv = document.querySelector("#idcheck-result");
     	 let recommandDiv = document.querySelector("#idcheck-recommand");
     	 if(userid.length < 6 || userid.length > 16) {
@@ -96,7 +97,7 @@
     		 resultDiv.textContent = "아이디는 6자 이상 16자 이하 입니다.";
     		 isUseId = false;
     	 } else {
-				fetch("${root}/user?act=idcheck&userid=" + userid)
+				fetch("${root}/user/idcheck?userId=" + userid)
 				.then(response => response.text())
 				.then(data => {
     			 if(data == 0) {
@@ -109,48 +110,53 @@
     			   resultDiv.setAttribute("class", "mb-3 text-danger");
       		       resultDiv.textContent = userid + "는 사용할 수 없습니다.";
       		       isUseId = false;
-      		       
-      		       
-	      		     fetch("${root}/user?act=idrecommand&userid=" + userid)
-	 				.then(response => response.text())
-	 				.then(data => {
-	     			 if(data == "none") {
-	     			   recommandDiv.setAttribute("class", "mb-3 text-danger");
-	     			   recommandDiv.textContent = "추천 가능한 아이디가 없습니다.";
-	     		       isUseId = false;
-	     			 } else {
-	     				recommandDiv.setAttribute("class", "mb-3 text-success");
-	     				recommandDiv.textContent = data + " 를 대체 아이디로 추천합니다.";
-	       		       isUseId = false;
-      		       
-    			 }
-				});
+				};
+    	 })
     	 }
       });
       
       document.querySelector("#btn-join").addEventListener("click", function () {
-        if (!document.querySelector("#username").value) {
-          alert("이름 입력!!");
-          return;
-        } else if (!document.querySelector("#userid").value) {
-          alert("아이디 입력!!");
-          return;
-        } else if (!document.querySelector("#userpwd").value) {
-          alert("비밀번호 입력!!");
-          return;
-        } else if (document.querySelector("#userpwd").value != document.querySelector("#pwdcheck").value) {
-          alert("비밀번호 확인!!");
-          return;
-        } else if (!isUseId) {
-          alert("아이디 확인!!");
-          return;
-        } else {
-          let form = document.querySelector("#form-join");
-          form.setAttribute("action", "${root}/user");
-          form.submit();
-        }
-      });
-    	 }
-      });
+          let registerinfo = {
+  	        userName: document.querySelector("#userName").value,
+  	        userId: document.querySelector("#userId").value,
+  	        userPwd: document.querySelector("#userPwd").value,
+  	        emailId: document.querySelector("#emailId").value,
+  	        emailDomain: document.querySelector("#emailDomain").value,
+          };
+
+          let config = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(registerinfo),
+          };
+          
+          if (!document.querySelector("#userName").value) {
+            alert("이름 입력!!");
+            return;
+          } else if (!document.querySelector("#userId").value) {
+            alert("아이디 입력!!");
+            return;
+          } else if (!document.querySelector("#userPwd").value) {
+            alert("비밀번호 입력!!");
+            return;
+          } else if (document.querySelector("#userPwd").value != document.querySelector("#pwdcheck").value) {
+            alert("비밀번호 확인!!");
+            return;
+          } else if (!isUseId) {
+            alert("아이디 확인!!");
+            return;
+          } else {
+        	  
+            fetch(`/user/join`, config)
+            	.then((response) => response.json())
+            location.href = "${root}/user/home";
+            /* let form = document.querySelector("#form-join");
+            form.setAttribute("action", "${root}/user/join");
+            form.submit(); */
+          }
+       });
+      
     </script>
-	<%@ include file="/common/footer.jsp"%>
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>

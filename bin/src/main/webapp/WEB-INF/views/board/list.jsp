@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="/common/header.jsp" %>
-<%@ include file="/common/styleheader.jsp" %>
-
+<%@ include file="/WEB-INF/views/WEB-INF/views/common/header.jsp" %>
+<%@ include file="/WEB-INF/views/common/styleheader.jsp" %>
 
           <h2 class="my-3 py-3 shadow-sm bg-light text-center">공지 사항</h2>
         </div>
@@ -71,8 +70,8 @@
       let regist = document.querySelector("#btn-mv-register");
       if(regist != null){
 	      regist.addEventListener("click", function () {
-	        location.href = "${root}/board?act=mvwrite";
+	        location.href = "${root}/board/write";
 	      });
       }
     </script>
-<%@ include file="/common/footer.jsp" %>
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="/common/header.jsp" %>
-<%@ include file="/common/styleheader.jsp" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+<%@ include file="/WEB-INF/views/common/styleheader.jsp" %>
 
           <h2 class="my-3 py-3 shadow-sm bg-light text-center">
             <mark class="sky">글쓰기</mark>
@@ -46,15 +46,15 @@
           return;
         } else {
           let form = document.querySelector("#form-register");
-          form.setAttribute("action", "${root}/board?act=write&curId=${userinfo.userId}&curName=${userinfo.userName}");
+          form.setAttribute("action", "${root}/board/write&curId=${userinfo.userId}&curName=${userinfo.userName}");
           form.submit();
         }
       });
       
       document.querySelector("#btn-list").addEventListener("click", function () {
     	if(confirm("취소를 하시면 작성한 글은 삭제됩니다.\n취소하시겠습니까?")) {
-			location.href="${root}/board?act=list";
+			location.href="${root}/board/list";
    	    }
       });
     </script>
-<%@ include file="/common/footer.jsp" %>
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="/common/header.jsp" %>
-<%@ include file="/common/styleheader.jsp" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+<%@ include file="/WEB-INF/views/common/styleheader.jsp" %>
 <c:if test="${empty article}">
 	<script type="text/javascript">
 		alert("정상적인 URL 접근이 아닙니다.");
@@ -46,15 +46,15 @@
           return;
         } else {
           let form = document.querySelector("#form-modify");
-          form.setAttribute("action", "${root}/board?act=modify");
+          form.setAttribute("action", "${root}/board/modify");
           form.submit();
         }
       });
       
       document.querySelector("#btn-list").addEventListener("click", function () {
       	if(confirm("취소를 하시면 수정이 취소됩니다.\n취소하시겠습니까?")) {
-      		location.href="${root}/board?act=list";
+      		location.href="${root}/board/list";
      	    }
         });
     </script>
-<%@ include file="/common/footer.jsp" %>
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>

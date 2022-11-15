@@ -2,7 +2,7 @@
 <!-- jstl 환경설정 -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- 변수 선언 jstl tag -->
-<c:set var="root" value="${pageContext.request.contextPath}/WEB-INF/views"/>
+<c:set var="root" value="${pageContext.request.contextPath}"/>
 <!-- user info 객체 lookup
    scope객체를 지정하지 않으면 자동으로 순서대로 lookup
    현재페이지 -> requsetScope -> sessionScope -> applicationScope

@@ -63,10 +63,10 @@ public class MemberController extends HttpServlet {
 	
 	@PostMapping("/login")
 	@ResponseBody
-	public ResponseEntity<String> login(@RequestBody Map<String, String> map, RedirectAttributes redirectAttributes, HttpSession session, HttpServletResponse response) throws Exception {
+	public ResponseEntity<String> login(@RequestBody Member member, RedirectAttributes redirectAttributes, HttpSession session, HttpServletResponse response) throws Exception {
 		logger.info("post: login");
-		System.out.println(map);
-		Member memberDto = memberService.loginMember(map);
+		System.out.println(member);
+		Member memberDto = memberService.loginMember(member);
 		if(memberDto != null) {
 			session.setAttribute("userinfo", memberDto);
 			
@@ -78,7 +78,7 @@ public class MemberController extends HttpServlet {
 //				cookie.setMaxAge(0);
 //			}
 //			response.addCookie(cookie);
-			return new ResponseEntity<String>(map.get("userid"), HttpStatus.OK);
+			return new ResponseEntity<String>(member.getUserId(), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 		}

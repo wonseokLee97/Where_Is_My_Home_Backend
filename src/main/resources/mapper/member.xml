@@ -30,13 +30,13 @@
 	<select id="loginMember" resultMap="memberAll">
 		select userId, userName, userPwd, emailId, emailDomain, joinDate
 		from member
-		where userId = #{userid} and userPwd = #{userpwd}
+		where userId = #{userId} and userPwd = #{userPwd}
 	</select>
 	
 	<select id="getMember" resultMap="memberAll">
 		select userId, userName, userPwd, emailId, emailDomain, joinDate
 		from member
-		where userId = #{userid}
+		where userId = #{userId}
 	</select>
 	
 	<update id="modifyMember" parameterType="member">

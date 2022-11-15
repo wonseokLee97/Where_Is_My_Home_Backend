@@ -72,7 +72,7 @@
 										<div class="text-danger mb-2">${msg}</div>
 										<div class="col-auto text-center">
 											<a class="small" id="btn-mv-join"
-												href="${root}/user?act=mvfindpw">비밀번호 찾기</a>
+												href="${root}/user/findpw">비밀번호 찾기</a>
 											&nbsp;&nbsp;&nbsp; <a class="small" id="btn-mv-findpw"
 												href="${root}/user/join">회원가입</a>
 										</div>
@@ -85,6 +85,24 @@
 					</div>
 				</div>
 			</div>
+			
+						<script>
+				//로그인
+				document.querySelector("#btn-login").addEventListener("click",
+						function() {
+							if (!document.querySelector("#userid").value) {
+								alert("아이디 입력!!");
+								return;
+							} else if (!document.querySelector("#userpwd").value) {
+								alert("비밀번호 입력!!");
+								return;
+							} else {
+								let form = document.querySelector("#form-login");
+								form.setAttribute("action", "${root}/user/login");
+								form.submit();
+							}
+						});
+			</script>
 		</c:when>
 		<c:otherwise>
 			<div class="container">
@@ -128,24 +146,8 @@
 
 				</div>
 			</div>
+
+
 		</c:otherwise>
 	</c:choose>
-
-	<script>
-		//로그인
-		document.querySelector("#btn-login").addEventListener("click",
-				function() {
-					if (!document.querySelector("#userid").value) {
-						alert("아이디 입력!!");
-						return;
-					} else if (!document.querySelector("#userpwd").value) {
-						alert("비밀번호 입력!!");
-						return;
-					} else {
-						let form = document.querySelector("#form-login");
-						form.setAttribute("action", "${root}/user/login");
-						form.submit();
-					}
-				});
-	</script>
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>

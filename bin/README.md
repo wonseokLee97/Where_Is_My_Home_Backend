@@ -1,4 +1,4 @@
-# SSAFY8기_광주5반_관통_Framework_1팀_안수빈_이원석
+# SSAFY8기_광주5반_관통_Backend_1팀_안수빈_이원석
 
 
 
@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://lab.ssafy.com/sbsc20/WhereIsMyHome_Framework.git
+git remote add origin https://lab.ssafy.com/bulnabang99/WhereIsMyHome_Backend.git
 git branch -M master
 git push -uf origin master
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](https://lab.ssafy.com/sbsc20/WhereIsMyHome_Framework/-/settings/integrations)
+- [ ] [Set up project integrations](https://lab.ssafy.com/bulnabang99/WhereIsMyHome_Backend/-/settings/integrations)
 
 ## Collaborate with your team
 

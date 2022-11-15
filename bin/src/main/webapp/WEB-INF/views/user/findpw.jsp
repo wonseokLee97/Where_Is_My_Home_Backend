@@ -25,7 +25,7 @@
 <title>구해줘 홈즈</title>
 </head>
 <body id="page-top">
-	<%@ include file="/common/styleheader.jsp"%>
+	<%@ include file="/WEB-INF/views/common/styleheader.jsp"%>
 	<div class="card-body p-0">
 		<!-- Nested Row within Card Body -->
 		<div class="row">
@@ -35,11 +35,10 @@
 						<h1 class="h4 text-gray-900 mb-4">비밀번호를 찾기 위한 데이터 입력</h1>
 					</div>
 					<form class="user" action="" method="POST" id="form-find" name="form-find">
-						<input type="hidden" name="act" value="findUser">
 						<input type="text"
-							class="form-group form-control form-control-user" id="userId" name="userid"
+							class="form-group form-control form-control-user" id="userId" name="userId"
 							required placeholder="아이디" required> <input type="text"
-							class="form-group form-control form-control-user" id="userName" name="username"
+							class="form-group form-control form-control-user" id="userName" name="userName"
 							required placeholder="이름"  required >
 						<div class="input-group mb-3">
 							<input type="text" class="form-control form-control-user"
@@ -58,8 +57,8 @@
 					</form>
 					<hr>
 					<div class="text-center">
-						<a class="small" href="${root}/user?act=mvlogin">로그인</a> &nbsp;&nbsp;&nbsp;
-						<a class="small" href="${root}/user?act=mvjoin">회원가입</a>
+						<a class="small" href="${root}/user/login">로그인</a> &nbsp;&nbsp;&nbsp;
+						<a class="small" href="${root}/user/join">회원가입</a>
 					</div>
 				</div>
 			</div>
@@ -68,8 +67,8 @@
 	<script>
 	 document.querySelector("#btn-find").addEventListener("click", function () {
           let form = document.querySelector("#form-find");
-          form.setAttribute("action", "${root}/user");
+          form.setAttribute("action", "${root}/user/findpw");
           form.submit();
 	 });
 	</script>
-	<%@ include file="/common/footer.jsp"%>
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
