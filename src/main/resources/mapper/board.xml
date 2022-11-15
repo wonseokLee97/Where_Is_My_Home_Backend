@@ -12,7 +12,7 @@
 		<result column="regtime" property="regtime"/>
 	</resultMap>
 	
-	<resultMap  type="boardDto" id="viewArticle" extends="board">
+	<resultMap  type="boardDto" id="viewArticle" extends="article">
 		<result column="content" property="content"/>
 		<collection property="comments" column="articleno" javaType="list" ofType="commentDto" select="commentList"/>
 	</resultMap>
@@ -60,33 +60,28 @@
 		where articleno = #{articleno}
 	</select>
 	
-	
 	<update id="updateHit">
 		update board
 		set hit = hit + 1
 		where articleno = #{articleno}
 	</update>
 	
-	<update id="modifyArticle"
+	<update id="modifyArticle">
 		update board
 		set subject = #{subject}, content = #{content}
 		where articleno = #{articleno}
 	</update>
-	
-	<delete id="deleteMemo">
-		delete from memo
-		where articleno = #{articleno}
-	</delete>
 	
 	<delete id="deleteArticle">
 		delete from board
 		where articleno = #{articleno}
 	</delete>
 
-	<!-- ============ 댓글 작성 및 조회 =============== -->
+	<!-- ============ 댓글 CRUD =============== -->
 	<insert id="writeComment">
-		insert into comment (userid, content, regtime, articleno)
-		values (#{userid}, #{content}, now(), #{articleno});
+		update board
+		set subject = #{subject}, content = #{content}
+		where commentno = #{articleno}
 	</insert>
 	
 	<select id="commentList" resultType="commentDto">
@@ -94,6 +89,18 @@
 		from comment
 		where articleno = #{articleNo}
 	</select>
+	
+	<update id="modifyComment">
+		update comment
+		set content = #{content}
+		where commentno = #{commentno}
+	</update>
+	
+	<delete id="deleteComment">
+		delete from comment
+		where commentno = #{commentno}
+	</delete>
+
 	<!-- ========================================== -->
 	
 </mapper>

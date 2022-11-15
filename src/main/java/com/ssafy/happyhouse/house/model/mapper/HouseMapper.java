@@ -18,7 +18,6 @@ public interface HouseMapper {
 	int totalAptDealCount(Map<String, Object> map) throws SQLException;
 	
 	List<Favorite> getFavorites(String userId) throws SQLException;
-//	List<String> getFavorites(String userId) throws SQLException;
 	boolean addFavorite(Map<String, String> map) throws SQLException;
 	boolean deleteFavorite(Map<String, String> map) throws SQLException;
 	

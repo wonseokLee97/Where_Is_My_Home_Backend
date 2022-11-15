@@ -1,7 +1,5 @@
 package com.ssafy.happyhouse.member.model.service;
 
-import java.util.Map;
-
 import com.ssafy.happyhouse.member.model.dto.Member;
 
 public interface MemberService {

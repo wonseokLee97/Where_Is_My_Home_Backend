@@ -30,7 +30,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
 	private final String uploadFilePath;
 
-	// see: application.properties: file.path.upload-files=C:/board/upload/fileUpload/
 	public WebMvcConfiguration(@Value("${file.path.upload-files}") String uploadFilePath) {
 		this.uploadFilePath = uploadFilePath;
 	}

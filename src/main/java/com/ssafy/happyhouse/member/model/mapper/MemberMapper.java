@@ -1,7 +1,6 @@
 package com.ssafy.happyhouse.member.model.mapper;
 
 import java.sql.SQLException;
-import java.util.Map;
 
 import com.ssafy.happyhouse.member.model.dto.Member;
 

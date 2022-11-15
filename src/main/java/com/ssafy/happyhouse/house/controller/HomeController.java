@@ -1,6 +1,5 @@
 package com.ssafy.happyhouse.house.controller;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -12,15 +11,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.additional.model.dto.Favorite;
 import com.ssafy.happyhouse.house.model.dto.AptDeal;
@@ -29,7 +26,7 @@ import com.ssafy.happyhouse.house.model.service.HouseService;
 import com.ssafy.happyhouse.member.model.dto.Member;
 import com.ssafy.happyhouse.util.ParameterCheck;
 
-@Controller
+@RestController
 @RequestMapping("/home")
 public class HomeController extends HttpServlet {
 	
@@ -38,35 +35,30 @@ public class HomeController extends HttpServlet {
 	@Autowired
 	private HouseService houseService;
 
-	@GetMapping("apt")
-	public String apt() {
-		return "apt/apart";
-	}
-
-	@GetMapping("deal")
-	public String deal() {
-		return "apt/deal";
-	}
-
-	@GetMapping("view")
-	public String view(@RequestParam("aptcode") String aptCode, Model model) throws SQLException {
-		AptInfo info = houseService.getAptInfo(aptCode);
-		model.addAttribute("home", info);
-		return "apt/view";
-	}
-
-	
-	@GetMapping("add")
-	public String test() {
-		return "apt/additional";
-	}
-	
-	
+//	@GetMapping("apt")
+//	public String apt() {
+//		return "apt/apart";
+//	}
+//
+//	@GetMapping("deal")
+//	public String deal() {
+//		return "apt/deal";
+//	}
+//
+//	@GetMapping("view")
+//	public String view(@RequestParam("aptcode") String aptCode, Model model) throws SQLException {
+//		AptInfo info = houseService.getAptInfo(aptCode);
+//		model.addAttribute("home", info);
+//		return "apt/view";
+//	}
+//	
+//	@GetMapping("add")
+//	public String test() {
+//		return "apt/additional";
+//	}
 	
 	@GetMapping("/favorite")
-	@ResponseBody
 	public ResponseEntity<?> favorite(HttpSession session) throws SQLException {
-		
 		Member member = (Member) session.getAttribute("userinfo");
 		houseService.getFavorites(member.getUserId());
 		List<Favorite> list = houseService.getFavorites(member.getUserId());
@@ -79,32 +71,24 @@ public class HomeController extends HttpServlet {
 	}
 	
 	@PostMapping("/favorite")
-	@ResponseBody
 	public void favorite(@RequestParam("dong") String dongCode, HttpSession session) throws SQLException {
 		Map<String, String> map = new HashMap<>();
 		Member member = (Member) session.getAttribute("userinfo");
 		map.put("dongCode", dongCode);
 		map.put("userId", member.getUserId());
-
 		houseService.addFavorite(map);
 	}
 	
-	
 	@DeleteMapping("/favorite/{id}")
-	@ResponseBody
 	public void delete(@PathVariable ("id") String dongCode, HttpSession session) throws SQLException {
 		Map<String, String> map = new HashMap<String, String>();
 		Member member = (Member) session.getAttribute("userinfo");
-
 		map.put("dongCode", dongCode);
 		map.put("userId", member.getUserId());
 		houseService.deleteFavorite(map);
-		
 	}
 	
-	
 	@GetMapping("alist")
-	@ResponseBody
 	public ResponseEntity<?> aptList(@RequestParam("dong") String dongCode, int pgno) throws SQLException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("dongCode", dongCode);
@@ -135,7 +119,6 @@ public class HomeController extends HttpServlet {
 	}
 
 	@GetMapping("dlist")
-	@ResponseBody
 	public ResponseEntity<?> dealList(@RequestParam("dong") String dongCode, int pgno, String year, String month) throws SQLException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("dongCode", dongCode);
@@ -170,7 +153,6 @@ public class HomeController extends HttpServlet {
 	}
 
 	@GetMapping("adlist")
-	@ResponseBody
 	public ResponseEntity<?> apartDealList(@RequestParam("aptcode") String aptCode, int pgno, String year, String month) throws SQLException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("aptCode", aptCode);

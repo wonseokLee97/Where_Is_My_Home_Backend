@@ -13,37 +13,25 @@ import com.ssafy.happyhouse.board.model.dto.CommentDto;
 import com.ssafy.happyhouse.board.model.mapper.BoardMapper;
 import com.ssafy.happyhouse.util.PageNavigation;
 
-
-
 @Service
 public class BoardServiceImpl implements BoardService {
 	
 	@Autowired
-	private SqlSession sqlSession;
-
+	private BoardMapper boardMapper;
+	
 	@Override
 	public boolean writeArticle(BoardDto boardDto) throws Exception {
 		if(boardDto.getSubject() == null || boardDto.getContent() == null) {
 			throw new Exception();
 		}
-		return sqlSession.getMapper(BoardMapper.class).writeArticle(boardDto) == 1;
+		return boardMapper.writeArticle(boardDto) == 1;
 	}
-	
-	@Override
-	public boolean writeComment(CommentDto commentDto) throws Exception {
-		// TODO Auto-generated method stub
-		if(commentDto.getContent() == null) {
-			throw new Exception();
-		}
-		return sqlSession.getMapper(BoardMapper.class).writeComment(commentDto) == 1;
-	}
-	
 
 	@Override
 	public List<BoardDto> listArticle(BoardParameterDto boardParameterDto) throws Exception {
 		int start = boardParameterDto.getPg() == 0 ? 0 : (boardParameterDto.getPg() - 1) * boardParameterDto.getSpp();
 		boardParameterDto.setStart(start);
-		return sqlSession.getMapper(BoardMapper.class).listArticle(boardParameterDto);
+		return boardMapper.listArticle(boardParameterDto);
 	}
 
 	@Override
@@ -52,7 +40,7 @@ public class BoardServiceImpl implements BoardService {
 		PageNavigation pageNavigation = new PageNavigation();
 		pageNavigation.setCurrentPage(boardParameterDto.getPg());
 		pageNavigation.setNaviSize(naviSize);
-		int totalCount = sqlSession.getMapper(BoardMapper.class).getTotalCount(boardParameterDto);//총글갯수  269
+		int totalCount = boardMapper.getTotalCount(boardParameterDto);//총글갯수  269
 		pageNavigation.setTotalCount(totalCount);  
 		int totalPageCount = (totalCount - 1) / boardParameterDto.getSpp() + 1;//27
 		pageNavigation.setTotalPageCount(totalPageCount);
@@ -66,26 +54,43 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public BoardDto getArticle(int articleno) throws Exception {
-		return sqlSession.getMapper(BoardMapper.class).getArticle(articleno);
+		return boardMapper.getArticle(articleno);
 	}
 	
 	@Override
 	public void updateHit(int articleno) throws Exception {
-		sqlSession.getMapper(BoardMapper.class).updateHit(articleno);
+		boardMapper.updateHit(articleno);
 	}
 
 	@Override
 	@Transactional
 	public boolean modifyArticle(BoardDto boardDto) throws Exception {
-		return sqlSession.getMapper(BoardMapper.class).modifyArticle(boardDto) == 1;
+		return boardMapper.modifyArticle(boardDto) == 1;
 	}
 
 	@Override
 	@Transactional
 	public boolean deleteArticle(int articleno) throws Exception {
-		sqlSession.getMapper(BoardMapper.class).deleteMemo(articleno);
-		return sqlSession.getMapper(BoardMapper.class).deleteArticle(articleno) == 1;
+		boardMapper.deleteArticle(articleno);
+		return boardMapper.deleteArticle(articleno) == 1;
 	}
 
+	@Override
+	public boolean writeComment(CommentDto commentDto) throws Exception {
+		if(commentDto.getContent() == null) {
+			throw new Exception();
+		}
+		return boardMapper.writeComment(commentDto) == 1;
+	}
+	
+	@Override
+	public boolean modifyComment(CommentDto commentDto) throws Exception {
+		return boardMapper.modifyComment(commentDto) == 1;
+	}
+
+	@Override
+	public boolean deleteComment(int commentNo) throws Exception {
+		return boardMapper.deleteComment(commentNo) == 1;
+	}
 
 }

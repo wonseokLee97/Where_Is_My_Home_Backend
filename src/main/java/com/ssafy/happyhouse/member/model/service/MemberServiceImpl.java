@@ -1,7 +1,6 @@
 package com.ssafy.happyhouse.member.model.service;
 
 import java.sql.SQLException;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
