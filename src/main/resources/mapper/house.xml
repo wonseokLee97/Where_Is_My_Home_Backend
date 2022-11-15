@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.happyhouse.house.model.mapper.HouseMapper">
+
+	<select id="getDongCode" resultType="String">
+		select dongcode 
+		from dongcode 
+		where sidoname=#{sidoName} and gugunname=#{gugunName} and dongname=#{dongName}";
+	</select>
+
+	<select id="getAptInfo" resultType="aptInfo">
+		select aptcode, roadname, jibun, apartmentname, buildYear, dong, lng, lat
+		from houseinfo 
+		where aptCode=#{aptCode}
+	</select>
+	
+	<select id="getAptInfos" resultType="aptInfo">
+		select aptcode, roadname, jibun, apartmentname, lng, lat
+		from houseinfo 
+		where dongcode=#{dongCode}
+		order by apartmentname desc limit ${start}, ${spl}
+	</select>
+
+	<select id="getAptDeals" resultType="aptDeal">
+		select hi.aptCode, hi.roadname, hi.jibun, hi.apartmentname, hd.floor, hd.dealamount, hi.lng, hi.lat
+		from houseinfo hi natural join housedeal hd
+		<where>
+			<if test="dongCode != null">and hi.dongcode=#{dongCode}</if>
+			<if test="aptCode != null">and hi.aptcode=#{aptCode}</if>
+			and hd.dealyear=#{dealYear} and hd.dealmonth=#{dealMonth}
+		</where>
+		order by hi.apartmentname desc limit ${start}, ${spl}
+	</select>
+	
+	<select id="totalAptInfoCount" resultType="int">
+		select count(*) 
+		from houseinfo 
+		where dongcode=#{dongCode}
+	</select>
+	
+	<select id="totalAptDealCount" resultType="int">
+		select count(*)
+		from houseinfo hi natural join housedeal hd
+		<where>
+			<if test="dongCode != null">and hi.dongcode=#{dongCode}</if>
+			<if test="aptCode != null">and hi.aptcode=#{aptCode}</if>
+			and hd.dealyear=#{dealYear} and hd.dealmonth=#{dealMonth}
+		</where>
+	</select>
+	
+	<select id="getFavorites" resultType="favorite">
+		select d.sidoname, d.gugunname, d.dongname, d.dongcode
+		from favorite f natural join dongcode d
+		where f.userid=#{userId}
+	</select>
+	
+	<insert id="addFavorite">
+		insert into favorite 
+		values(#{userId}, #{dongCode})
+	</insert>
+	
+	<delete id="deleteFavorite">
+		delete from favorite 
+		where userid=#{userId} and dongcode=#{dongCode}
+	</delete>
+
+	<select id="getFavoriteLatest" resultType="aptDeal">
+		select hi.aptcode, hi.dong, hi.roadname, hi.jibun, hi.apartmentname, hd.floor, hd.dealamount
+		from houseinfo hi natural join housedeal hd natural join favorite f
+		where f.userid=#{userId} and hd.dealyear=year(now())
+	</select>
+	
+	<select id="getSido" resultType="string">
+		select distinct sidoName 
+		from dongCode
+	</select>
+	
+	<select id="getGugun" resultType="string">
+		select distinct gugunName 
+		from dongCode 
+		where sidoName = #{sidoName}
+	</select>
+	
+	<select id="getDong" resultType="string">
+		select distinct dongName 
+		from dongCode 
+		where gugunName = #{gugunName}
+	</select>
+	
+</mapper>
