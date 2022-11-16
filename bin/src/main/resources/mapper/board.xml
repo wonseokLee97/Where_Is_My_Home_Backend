@@ -1,36 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-<mapper
-	namespace="com.ssafy.happyhouse.board.model.mapper.BoardMapper">
-
+	
+<mapper namespace="com.ssafy.happyhouse.board.model.mapper.BoardMapper">
+	
 	<resultMap type="boardDto" id="article">
-		<result column="articleno" property="articleno" />
-		<result column="userid" property="userid" />
-		<result column="subject" property="subject" />
-		<result column="hit" property="hit" />
-		<result column="regtime" property="regtime" />
+		<result column="articleno" property="articleno"/>
+		<result column="userid" property="userid"/>
+		<result column="subject" property="subject"/>	
+		<result column="hit" property="hit"/>
+		<result column="regtime" property="regtime"/>
 	</resultMap>
-
-	<resultMap type="boardDto" id="viewArticle" extends="article">
-		<result column="content" property="content" />
-		<collection property="comments" column="articleno"
-			javaType="list" ofType="commentDto" select="commentList" />
+	
+	<resultMap  type="boardDto" id="viewArticle" extends="article">
+		<result column="content" property="content"/>
+		<collection property="comments" column="articleno" javaType="list" ofType="commentDto" select="commentList"/>
 	</resultMap>
-
+	
 	<insert id="writeArticle">
-		insert into board (userid, subject, content, hit,
-		regtime)
+		insert into board (userid, subject, content, hit, regtime)
 		values (#{userid}, #{subject}, #{content}, 0, now())
 	</insert>
-
+	
 	<select id="listArticle" resultMap="article">
 		select articleno, userid, subject, hit,
-		case when date_format(regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
-		then date_format(regtime, '%H:%i:%s')
-		else date_format(regtime, '%y.%m.%d')
-		end regtime
+				case when date_format(regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
+				then date_format(regtime, '%H:%i:%s')
+				else date_format(regtime, '%y.%m.%d')
+				end regtime
 		from board
 		<if test="word != null and word != ''">
 			<if test="key == 'subject'">
@@ -43,7 +40,7 @@
 		order by articleno desc
 		limit #{start}, #{spp}
 	</select>
-
+	
 	<select id="getTotalCount" resultType="int">
 		select count(articleno)
 		from board
@@ -56,28 +53,25 @@
 			</if>
 		</if>
 	</select>
-
+	
 	<select id="getArticle" resultMap="viewArticle">
-		select articleno, userid,
-		subject, content, hit, regtime
+		select articleno, userid, subject, content, hit, regtime
 		from board
 		where articleno = #{articleno}
 	</select>
-
+	
 	<update id="updateHit">
 		update board
 		set hit = hit + 1
-		where articleno =
-		#{articleno}
-	</update>
-
-	<update id="modifyArticle">
-		update board
-		set subject = #{subject}, content =
-		#{content}
 		where articleno = #{articleno}
 	</update>
-
+	
+	<update id="modifyArticle">
+		update board
+		set subject = #{subject}, content = #{content}
+		where articleno = #{articleno}
+	</update>
+	
 	<delete id="deleteArticle">
 		delete from board
 		where articleno = #{articleno}
@@ -85,30 +79,29 @@
 
 	<!-- ============ 댓글 CRUD =============== -->
 	<insert id="writeComment">
-		insert into comment (userid, articleno, content, regtime)
-		values (#{userid}, #{articleno}, #{content}, now())
+		update board
+		set subject = #{subject}, content = #{content}
+		where commentno = #{articleno}
 	</insert>
-
+	
 	<select id="commentList" resultType="commentDto">
 		select *
 		from comment
-		where
-		articleno = #{articleNo}
+		where articleno = #{articleNo}
 	</select>
-
+	
 	<update id="modifyComment">
 		update comment
 		set content = #{content}
-		where commentno
-		= #{commentno}
+		where commentno = #{commentno}
 	</update>
-
+	
 	<delete id="deleteComment">
 		delete from comment
 		where commentno = #{commentno}
 	</delete>
 
 	<!-- ========================================== -->
-
+	
 </mapper>
 
