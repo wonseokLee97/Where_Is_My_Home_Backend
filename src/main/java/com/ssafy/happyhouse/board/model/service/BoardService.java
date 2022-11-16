@@ -20,5 +20,7 @@ public interface BoardService {
 	public boolean writeComment(CommentDto CommentDto) throws Exception;
 	public boolean modifyComment(CommentDto commentDto) throws Exception;
 	public boolean deleteComment(int commentNo) throws Exception;
+	public List<BoardDto> searchTitle(String subject) throws Exception;
+	public List<BoardDto> searchWriter(String writer) throws Exception;
 	
 }

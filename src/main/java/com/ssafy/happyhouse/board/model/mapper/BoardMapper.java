@@ -23,5 +23,7 @@ public interface BoardMapper {
 	public int writeComment(CommentDto commentDto) throws Exception;
 	public int modifyComment(CommentDto commentDto) throws Exception;
 	public int deleteComment(int commentNo) throws Exception;
+	public List<BoardDto> searchTitle(String subject);
+	public List<BoardDto> searchWriter(String writer);
 	
 }

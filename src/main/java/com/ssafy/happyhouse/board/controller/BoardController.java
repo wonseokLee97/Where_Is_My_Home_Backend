@@ -80,6 +80,23 @@ public class BoardController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 	
+	@ApiOperation(value = "제목 검색", notes = "게시물의 제목을 검색하여 게시글의 정보를 반환한다.", response = List.class)
+	@GetMapping("/title/{subject}")
+	public ResponseEntity<List<BoardDto>> searchTitle(@PathVariable("subject") @ApiParam(value = "검색할 제목.", required = true) String subject) throws Exception {
+		logger.info("searchTitle - 호출");
+		return new ResponseEntity<List<BoardDto>>(boardService.searchTitle(subject), HttpStatus.OK);
+	}
+	
+	
+	@ApiOperation(value = "작성자 검색", notes = "작성자를 검색하여 게시글의 정보를 반환한다.", response = List.class)
+	@GetMapping("/writer/{writer}")
+	public ResponseEntity<List<BoardDto>> searchWriter(@PathVariable("writer") @ApiParam(value = "검색할 작성자.", required = true) String writer) throws Exception {
+		logger.info("searchWriter - 호출");
+		return new ResponseEntity<List<BoardDto>>(boardService.searchWriter(writer), HttpStatus.OK);
+
+	}
+	
+	
 	@ApiOperation(value = "댓글 작성", notes = "새로운 댓글을 작성한다.", response = String.class)
 	@PostMapping("/comment")
 	public ResponseEntity<String> writeComment (@RequestBody @ApiParam(value = "댓글 정보.", required = true) CommentDto CommentDto) throws Exception {

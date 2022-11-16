@@ -91,4 +91,14 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.deleteComment(commentNo) == 1;
 	}
 
+	@Override
+	public List<BoardDto> searchTitle(String subject) throws Exception {
+		return boardMapper.searchTitle(subject);
+	}
+
+	@Override
+	public List<BoardDto> searchWriter(String writer) throws Exception {
+		return boardMapper.searchWriter(writer);
+	}
+
 }
