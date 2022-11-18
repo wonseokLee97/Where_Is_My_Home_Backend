@@ -1,6 +1,8 @@
 package com.ssafy.happyhouse.member.model.service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -45,5 +47,27 @@ public class MemberServiceImpl implements MemberService {
 	public void deleteMember(Member member) throws Exception {
 		memberMapper.deleteMember(member);
 	}
+
+	@Override
+	public void saveRefreshToken(String userid, String refreshToken) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userid", userid);
+		map.put("token", refreshToken);
+		memberMapper.saveRefreshToken(map);
+	}
+
+	@Override
+	public Object getRefreshToken(String userid) throws Exception {
+		return memberMapper.getRefreshToken(userid);
+	}
+
+	@Override
+	public void deleRefreshToken(String userid) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userid", userid);
+		map.put("token", null);
+		memberMapper.deleteRefreshToken(map);
+	}
+
 
 }
