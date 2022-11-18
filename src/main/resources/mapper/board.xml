@@ -20,17 +20,16 @@
 	</resultMap>
 
 	<insert id="writeArticle">
-		insert into board (userid, subject, content, hit,
-		regtime)
+		insert into board (userid, subject, content, hit, regtime)
 		values (#{userid}, #{subject}, #{content}, 0, now())
 	</insert>
 
 	<select id="listArticle" resultMap="article">
 		select articleno, userid, subject, hit,
-		case when date_format(regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
-		then date_format(regtime, '%H:%i:%s')
-		else date_format(regtime, '%y.%m.%d')
-		end regtime
+			case when date_format(regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
+			then date_format(regtime, '%H:%i:%s')
+			else date_format(regtime, '%y.%m.%d')
+			end regtime
 		from board
 		<if test="word != null and word != ''">
 			<if test="key == 'subject'">

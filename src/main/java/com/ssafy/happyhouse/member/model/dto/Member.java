@@ -18,5 +18,7 @@ public class Member {
 	private String emailId;
 	private String emailDomain;
 	private String joinDate;
+	private String grade;
+	private String token;
 	
 }
