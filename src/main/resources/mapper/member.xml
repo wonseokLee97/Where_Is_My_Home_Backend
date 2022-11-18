@@ -37,7 +37,7 @@
 	<select id="getMember" resultMap="memberAll">
 		select userid, username, userpwd, emailid, emaildomain, joindate, grade
 		from member
-		where userId = #{userId}
+		where userid = #{userId}
 	</select>
 	
 	<update id="modifyMember">
@@ -54,5 +54,23 @@
 		delete from member
 		where userid = #{userId}
 	</delete>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from member
+		where userid = #{userid}
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update member
+		set token = #{token}
+		where userid = #{userid}
+	</update>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update member
+		set token = #{token, jdbcType=VARCHAR}
+		where userid = #{userid}
+	</update>
 	
 </mapper>
