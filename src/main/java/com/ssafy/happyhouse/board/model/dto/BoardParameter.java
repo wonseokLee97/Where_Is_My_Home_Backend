@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(value = "BoardParameterDto : 게시판 파라미터 정보", description = "게시판의 글을 얻기위한 부가적인 파라미터 정보.")
-public class BoardParameterDto {
+public class BoardParameter {
 
 	@ApiModelProperty(value = "현재 페이지 번호")
 	private int pg;
@@ -17,7 +17,7 @@ public class BoardParameterDto {
 	@ApiModelProperty(value = "검색어")
 	private String word;
 	
-	public BoardParameterDto() {
+	public BoardParameter() {
 		pg = 1;
 		spp = 20;
 	}

@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.happyhouse.board.model.dto.BoardDto;
-import com.ssafy.happyhouse.board.model.dto.BoardParameterDto;
-import com.ssafy.happyhouse.board.model.dto.CommentDto;
+import com.ssafy.happyhouse.board.model.dto.Board;
+import com.ssafy.happyhouse.board.model.dto.BoardParameter;
+import com.ssafy.happyhouse.board.model.dto.Comment;
 import com.ssafy.happyhouse.board.model.mapper.BoardMapper;
 import com.ssafy.happyhouse.util.PageNavigation;
 
@@ -19,7 +19,7 @@ public class BoardServiceImpl implements BoardService {
 	private BoardMapper boardMapper;
 	
 	@Override
-	public boolean writeArticle(BoardDto boardDto) throws Exception {
+	public boolean writeArticle(Board boardDto) throws Exception {
 		if(boardDto.getSubject() == null || boardDto.getContent() == null) {
 			throw new Exception();
 		}
@@ -27,14 +27,14 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<BoardDto> listArticle(BoardParameterDto boardParameterDto) throws Exception {
+	public List<Board> listArticle(BoardParameter boardParameterDto) throws Exception {
 		int start = boardParameterDto.getPg() == 0 ? 0 : (boardParameterDto.getPg() - 1) * boardParameterDto.getSpp();
 		boardParameterDto.setStart(start);
 		return boardMapper.listArticle(boardParameterDto);
 	}
 
 	@Override
-	public PageNavigation makePageNavigation(BoardParameterDto boardParameterDto) throws Exception {
+	public PageNavigation makePageNavigation(BoardParameter boardParameterDto) throws Exception {
 		int naviSize = 5;
 		PageNavigation pageNavigation = new PageNavigation();
 		pageNavigation.setCurrentPage(boardParameterDto.getPg());
@@ -52,7 +52,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public BoardDto getArticle(int articleno) throws Exception {
+	public Board getArticle(int articleno) throws Exception {
 		return boardMapper.getArticle(articleno);
 	}
 	
@@ -63,7 +63,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public boolean modifyArticle(BoardDto boardDto) throws Exception {
+	public boolean modifyArticle(Board boardDto) throws Exception {
 		return boardMapper.modifyArticle(boardDto) == 1;
 	}
 
@@ -74,7 +74,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public boolean writeComment(CommentDto commentDto) throws Exception {
+	public boolean writeComment(Comment commentDto) throws Exception {
 		if(commentDto.getContent() == null) {
 			throw new Exception();
 		}
@@ -82,7 +82,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public boolean modifyComment(CommentDto commentDto) throws Exception {
+	public boolean modifyComment(Comment commentDto) throws Exception {
 		return boardMapper.modifyComment(commentDto) == 1;
 	}
 
@@ -92,12 +92,12 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<BoardDto> searchTitle(String subject) throws Exception {
+	public List<Board> searchTitle(String subject) throws Exception {
 		return boardMapper.searchTitle(subject);
 	}
 
 	@Override
-	public List<BoardDto> searchWriter(String writer) throws Exception {
+	public List<Board> searchWriter(String writer) throws Exception {
 		return boardMapper.searchWriter(writer);
 	}
 

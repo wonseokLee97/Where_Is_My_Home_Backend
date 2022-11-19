@@ -1,5 +1,7 @@
 package com.ssafy.happyhouse.board.model.dto;
 
+import java.util.List;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,15 +14,19 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CommentDto {
-	@ApiModelProperty(value = "댓글 번호")
-	private int commentno;
+public class Board {
 	@ApiModelProperty(value = "글 번호")
-	private int articleno;
+	private int articleNo;
 	@ApiModelProperty(value = "작성자 아이디")
-	private String userid;
-	@ApiModelProperty(value = "댓글 내용")
+	private String userId;
+	@ApiModelProperty(value = "글 제목")
+	private String subject;
+	@ApiModelProperty(value = "글 내용")
 	private String content;
+	@ApiModelProperty(value = "조회수")
+	private int hit;
 	@ApiModelProperty(value = "작성일")
 	private String regtime;
+	@ApiModelProperty(value = "댓글 리스트")
+	private List<Comment> comments;
 }

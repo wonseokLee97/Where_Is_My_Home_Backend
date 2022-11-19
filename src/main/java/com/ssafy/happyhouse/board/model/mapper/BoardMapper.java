@@ -5,25 +5,25 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ssafy.happyhouse.board.model.dto.BoardDto;
-import com.ssafy.happyhouse.board.model.dto.BoardParameterDto;
-import com.ssafy.happyhouse.board.model.dto.CommentDto;
+import com.ssafy.happyhouse.board.model.dto.Board;
+import com.ssafy.happyhouse.board.model.dto.BoardParameter;
+import com.ssafy.happyhouse.board.model.dto.Comment;
 
 
 @Mapper
 public interface BoardMapper {
 	
-	public int writeArticle(BoardDto boardDto) throws SQLException;
-	public List<BoardDto> listArticle(BoardParameterDto boardParameterDto) throws SQLException;
-	public int getTotalCount(BoardParameterDto boardParameterDto) throws SQLException;
-	public BoardDto getArticle(int articleno) throws SQLException;
+	public int writeArticle(Board boardDto) throws SQLException;
+	public List<Board> listArticle(BoardParameter boardParameterDto) throws SQLException;
+	public int getTotalCount(BoardParameter boardParameterDto) throws SQLException;
+	public Board getArticle(int articleno) throws SQLException;
 	public void updateHit(int articleno) throws SQLException;
-	public int modifyArticle(BoardDto boardDto) throws SQLException;
+	public int modifyArticle(Board boardDto) throws SQLException;
 	public int deleteArticle(int articleno) throws SQLException;
-	public int writeComment(CommentDto commentDto) throws Exception;
-	public int modifyComment(CommentDto commentDto) throws Exception;
+	public int writeComment(Comment commentDto) throws Exception;
+	public int modifyComment(Comment commentDto) throws Exception;
 	public int deleteComment(int commentNo) throws Exception;
-	public List<BoardDto> searchTitle(String subject);
-	public List<BoardDto> searchWriter(String writer);
+	public List<Board> searchTitle(String subject);
+	public List<Board> searchWriter(String writer);
 	
 }
