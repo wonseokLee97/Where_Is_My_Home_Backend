@@ -25,7 +25,7 @@
 
 	<insert id="joinMember">
 		insert into member (userid, username, userpwd, emailid, emaildomain, joindate, grade)
-		values (#{userId}, #{userName}, #{userPwd}, #{emailId}, #{emailDomain}, now(), #{grade})
+		values (#{userId}, #{userName}, #{userPwd}, #{emailId}, #{emailDomain}, now(), 'G')
 	</insert>
 
 	<select id="loginMember" resultMap="memberAll">
