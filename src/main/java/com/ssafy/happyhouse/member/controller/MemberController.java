@@ -6,15 +6,12 @@ import java.util.Map;
 //import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -97,9 +94,21 @@ public class MemberController extends HttpServlet {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@PostMapping("/join")
+	@PostMapping
 	public ResponseEntity<String> join(@RequestBody Member member) throws Exception {
 		memberService.joinMember(member);
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	}
+	
+	@PutMapping
+	public ResponseEntity<String> modify(@RequestBody Member member) throws Exception {
+		memberService.modifyMember(member);
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/{userid}")
+	public ResponseEntity<String> delete(@PathVariable("userid") String userId) throws Exception {
+		memberService.deleteMember(userId);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
