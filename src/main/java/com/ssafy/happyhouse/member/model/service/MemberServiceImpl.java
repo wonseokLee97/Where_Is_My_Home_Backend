@@ -4,6 +4,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.happyhouse.member.model.dto.Member;
@@ -17,6 +20,10 @@ public class MemberServiceImpl implements MemberService {
 	private MemberServiceImpl(MemberMapper memberMapper) {
 		this.memberMapper = memberMapper;
 	}
+	
+	@Autowired
+	private JavaMailSender mailSender;
+	private static final String FROM_ADDRESS = "bulnabang99@gmail.com";
 	
 	@Override
 	public int idCheck(String userId) throws Exception {
@@ -74,5 +81,15 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.getEmail(userName);
 	}
 
-
+//	@Override
+//	public void sendMail(String userPwd, String email) {
+//		SimpleMailMessage message = new SimpleMailMessage();
+//		message.setTo(email);
+//		message.setFrom(FROM_ADDRESS);
+//		message.setSubject("WhereIsMyHome 비밀번호 찾기 안내 메일입니다.");
+//		message.setText("귀하의 비밀번호는 [" + userPwd +"] 입니다.");
+//		System.out.println(message);
+//		mailSender.send(message);
+//		System.out.println("!!");
+//	}
 }
