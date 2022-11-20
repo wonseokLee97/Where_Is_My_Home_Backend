@@ -13,5 +13,5 @@ public interface MemberService {
 	public void saveRefreshToken(String userid, String refreshToken) throws Exception;
 	public Object getRefreshToken(String userid) throws Exception;
 	public void deleRefreshToken(String userid) throws Exception;
-	
+	Member getEmail(String userName) throws Exception;
 }

@@ -111,6 +111,21 @@ public class MemberController extends HttpServlet {
 		memberService.deleteMember(userId);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
+	
+	@GetMapping("/email/{userName}")
+	public ResponseEntity<Map<String, Object>> getEmail(@PathVariable("userName") String userName) throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		try {
+			Member member = memberService.getEmail(userName);
+			resultMap.put("userEmail", member);
+			resultMap.put("message", SUCCESS);
+		} catch (Exception e) {
+			logger.error("정보조회 실패 : {}",e);
+			resultMap.put("message", e.getMessage());
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+	}
+	
 
 	@GetMapping("/info/{userid}")
 	public ResponseEntity<Map<String, Object>> getInfo(

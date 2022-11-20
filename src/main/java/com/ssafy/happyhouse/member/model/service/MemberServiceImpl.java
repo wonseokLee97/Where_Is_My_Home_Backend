@@ -69,5 +69,10 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.deleteRefreshToken(map);
 	}
 
+	@Override
+	public Member getEmail(String userName) throws Exception {
+		return memberMapper.getEmail(userName);
+	}
+
 
 }

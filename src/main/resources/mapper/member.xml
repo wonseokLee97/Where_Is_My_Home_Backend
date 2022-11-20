@@ -16,6 +16,11 @@
 		<result column="joindate" property="joinDate"/>
 		<result column="grade" property="grade"/>
 	</resultMap>
+	
+	<resultMap type="member" id="memberEmail">
+		<result column="emailid" property="emailId"/>
+		<result column="emaildomain" property="emailDomain"/>
+	</resultMap>
 
 	<select id="idCheck" resultType="int">
 		select count(userId)
@@ -38,6 +43,12 @@
 		select userid, username, userpwd, emailid, emaildomain, joindate, grade
 		from member
 		where userid = #{userId}
+	</select>
+	
+	<select id="getEmail" resultMap="memberEmail">
+		select emailid, emaildomain
+		from member
+		where userName = #{userName}
 	</select>
 	
 	<update id="modifyMember">
