@@ -27,7 +27,6 @@ public class HouseServiceImpl implements HouseService {
 		return houseMapper.getDongCode(map);
 	}
 
-
 	@Override
 	public AptInfo getAptInfo(String aptCode) throws SQLException {
 		return houseMapper.getAptInfo(aptCode);

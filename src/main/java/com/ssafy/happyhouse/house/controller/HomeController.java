@@ -34,28 +34,21 @@ public class HomeController extends HttpServlet {
 
 	@Autowired
 	private HouseService houseService;
-
-//	@GetMapping("apt")
-//	public String apt() {
-//		return "apt/apart";
-//	}
-//
-//	@GetMapping("deal")
-//	public String deal() {
-//		return "apt/deal";
-//	}
-//
-//	@GetMapping("view")
-//	public String view(@RequestParam("aptcode") String aptCode, Model model) throws SQLException {
-//		AptInfo info = houseService.getAptInfo(aptCode);
-//		model.addAttribute("home", info);
-//		return "apt/view";
-//	}
-//	
-//	@GetMapping("add")
-//	public String test() {
-//		return "apt/additional";
-//	}
+	
+	@GetMapping("/sido")
+	public ResponseEntity<List<String>> sidoList() throws SQLException {
+		return new ResponseEntity<List<String>>(houseService.getSido(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/gugun")
+	public ResponseEntity<List<String>> gugunList(String sido) throws SQLException {
+		return new ResponseEntity<List<String>>(houseService.getGugun(sido), HttpStatus.OK);
+	}
+	
+	@GetMapping("/dong")
+	public ResponseEntity<List<String>> sidoList(String gugun) throws SQLException {
+		return new ResponseEntity<List<String>>(houseService.getDong(gugun), HttpStatus.OK);
+	}
 	
 	@GetMapping("/favorite")
 	public ResponseEntity<?> favorite(HttpSession session) throws SQLException {

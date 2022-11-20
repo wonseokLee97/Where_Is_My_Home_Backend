@@ -96,20 +96,22 @@
 	</select>
 	
 	<select id="getSido" resultType="string">
-		select distinct sidoName 
-		from dongCode
+		select distinct sidoname 
+		from dongcode
 	</select>
 	
 	<select id="getGugun" resultType="string">
-		select distinct gugunName 
-		from dongCode 
-		where sidoName = #{sidoName}
+		select distinct gugunname 
+		from dongcode 
+		where sidoname = #{sidoname} 
+		and gugunname is not null
 	</select>
 	
 	<select id="getDong" resultType="string">
-		select distinct dongName 
-		from dongCode 
-		where gugunName = #{gugunName}
+		select distinct dongname 
+		from dongcode 
+		where gugunname = #{gugunname} 
+		and dongname is not null
 	</select>
 	
 </mapper>

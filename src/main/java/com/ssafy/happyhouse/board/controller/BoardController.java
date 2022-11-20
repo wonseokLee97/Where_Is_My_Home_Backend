@@ -21,9 +21,6 @@ import com.ssafy.happyhouse.board.model.dto.BoardParameter;
 import com.ssafy.happyhouse.board.model.dto.Comment;
 import com.ssafy.happyhouse.board.model.service.BoardService;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-
 @RestController
 @RequestMapping("/board")
 public class BoardController {
