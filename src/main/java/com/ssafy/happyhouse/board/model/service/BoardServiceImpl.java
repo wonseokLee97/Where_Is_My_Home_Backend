@@ -1,5 +1,6 @@
 package com.ssafy.happyhouse.board.model.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import com.ssafy.happyhouse.board.model.dto.Board;
 import com.ssafy.happyhouse.board.model.dto.BoardParameter;
 import com.ssafy.happyhouse.board.model.dto.Comment;
 import com.ssafy.happyhouse.board.model.mapper.BoardMapper;
-import com.ssafy.happyhouse.util.PageNavigation;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -19,36 +19,23 @@ public class BoardServiceImpl implements BoardService {
 	private BoardMapper boardMapper;
 	
 	@Override
-	public boolean writeArticle(Board boardDto) throws Exception {
-		if(boardDto.getSubject() == null || boardDto.getContent() == null) {
+	public boolean writeArticle(Board board) throws Exception {
+		if(board.getSubject() == null || board.getContent() == null) {
 			throw new Exception();
 		}
-		return boardMapper.writeArticle(boardDto) == 1;
+		return boardMapper.writeArticle(board) == 1;
 	}
 
 	@Override
-	public List<Board> listArticle(BoardParameter boardParameterDto) throws Exception {
-		int start = boardParameterDto.getPg() == 0 ? 0 : (boardParameterDto.getPg() - 1) * boardParameterDto.getSpp();
-		boardParameterDto.setStart(start);
-		return boardMapper.listArticle(boardParameterDto);
+	public List<Board> listArticle(BoardParameter boardParameter) throws Exception {
+		int start = boardParameter.getPg() == 0 ? 0 : (boardParameter.getPg() - 1) * boardParameter.getSpp();
+		boardParameter.setStart(start);
+		return boardMapper.listArticle(boardParameter);
 	}
 
 	@Override
-	public PageNavigation makePageNavigation(BoardParameter boardParameterDto) throws Exception {
-		int naviSize = 5;
-		PageNavigation pageNavigation = new PageNavigation();
-		pageNavigation.setCurrentPage(boardParameterDto.getPg());
-		pageNavigation.setNaviSize(naviSize);
-		int totalCount = boardMapper.getTotalCount(boardParameterDto);//총글갯수  269
-		pageNavigation.setTotalCount(totalCount);  
-		int totalPageCount = (totalCount - 1) / boardParameterDto.getSpp() + 1;//27
-		pageNavigation.setTotalPageCount(totalPageCount);
-		boolean startRange = boardParameterDto.getPg() <= naviSize;
-		pageNavigation.setStartRange(startRange);
-		boolean endRange = (totalPageCount - 1) / naviSize * naviSize < boardParameterDto.getPg();
-		pageNavigation.setEndRange(endRange);
-		pageNavigation.makeNavigator();
-		return pageNavigation;
+	public int getTotalCount(BoardParameter boardParameter) throws SQLException {
+		return boardMapper.getTotalCount(boardParameter);
 	}
 
 	@Override
@@ -63,8 +50,8 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public boolean modifyArticle(Board boardDto) throws Exception {
-		return boardMapper.modifyArticle(boardDto) == 1;
+	public boolean modifyArticle(Board board) throws Exception {
+		return boardMapper.modifyArticle(board) == 1;
 	}
 
 	@Override
@@ -74,16 +61,16 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public boolean writeComment(Comment commentDto) throws Exception {
-		if(commentDto.getContent() == null) {
+	public boolean writeComment(Comment comment) throws Exception {
+		if(comment.getContent() == null) {
 			throw new Exception();
 		}
-		return boardMapper.writeComment(commentDto) == 1;
+		return boardMapper.writeComment(comment) == 1;
 	}
 	
 	@Override
-	public boolean modifyComment(Comment commentDto) throws Exception {
-		return boardMapper.modifyComment(commentDto) == 1;
+	public boolean modifyComment(Comment comment) throws Exception {
+		return boardMapper.modifyComment(comment) == 1;
 	}
 
 	@Override

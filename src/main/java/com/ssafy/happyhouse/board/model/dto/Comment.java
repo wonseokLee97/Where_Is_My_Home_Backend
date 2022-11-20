@@ -12,9 +12,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Comment {
+	
 	private int commentNo;
 	private int articleNo;
 	private String userId;
 	private String content;
 	private String regtime;
+	
 }
