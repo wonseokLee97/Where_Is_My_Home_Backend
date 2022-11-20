@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.happyhouse.member.model.dto.MailInfo;
 import com.ssafy.happyhouse.member.model.dto.Member;
+import com.ssafy.happyhouse.member.model.service.EmailService;
 import com.ssafy.happyhouse.member.model.service.JwtServiceImpl;
 import com.ssafy.happyhouse.member.model.service.MemberService;
 
@@ -41,7 +43,9 @@ public class MemberController extends HttpServlet {
 	
 	@Autowired
 	private MemberService memberService;
-
+	@Autowired
+	private EmailService emailService;
+	
 	@GetMapping("/idcheck")
 	public int idCheck(@RequestParam("userId") String userId) throws Exception {
 		System.out.println(userId);
@@ -107,18 +111,30 @@ public class MemberController extends HttpServlet {
 	}
 	
 	@DeleteMapping("/{userid}")
-	public ResponseEntity<String> delete(@PathVariable("userid") String userId) throws Exception {
-		memberService.deleteMember(userId);
+	public ResponseEntity<String> delete(@PathVariable("userid") String userid) throws Exception {
+		memberService.deleteMember(userid);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 	
-	@GetMapping("/email/{userName}")
-	public ResponseEntity<Map<String, Object>> getEmail(@PathVariable("userName") String userName) throws Exception {
+	@PostMapping("/email")
+	public ResponseEntity<Map<String, Object>> getEmail(@RequestBody MailInfo info) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
+		
 		try {
-			Member member = memberService.getEmail(userName);
-			resultMap.put("userEmail", member);
-			resultMap.put("message", SUCCESS);
+			Member member = memberService.getEmail(info.getUserName());
+			if (member != null) {
+				String email = member.getEmailId() + "@" + member.getEmailDomain();
+				
+				if (email.equals(info.getUserEmail())) {
+					resultMap.put("userEmail", member);
+					resultMap.put("message", SUCCESS);
+					String confirm = emailService.sendSimpleMessage(member.getUserPwd(), email);
+				} else {
+					return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.NO_CONTENT);
+				}
+			} else {
+				return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.NO_CONTENT);
+			}
 		} catch (Exception e) {
 			logger.error("정보조회 실패 : {}",e);
 			resultMap.put("message", e.getMessage());
@@ -126,6 +142,7 @@ public class MemberController extends HttpServlet {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
+	//
 
 	@GetMapping("/info/{userid}")
 	public ResponseEntity<Map<String, Object>> getInfo(

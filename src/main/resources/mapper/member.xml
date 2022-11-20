@@ -46,7 +46,7 @@
 	</select>
 	
 	<select id="getEmail" resultMap="memberEmail">
-		select emailid, emaildomain
+		select emailid, emaildomain, userpwd
 		from member
 		where userName = #{userName}
 	</select>
