@@ -30,7 +30,9 @@
 	<select id="getDongCode" resultType="String">
 		select dongcode 
 		from dongcode 
-		where sidoname=#{sido} and gugunname=#{gugun} and dongname=#{dong}
+		where sidoname=#{sidoName} 
+			and gugunname=#{gugunName} 
+			and dongname=#{dongName}
 	</select>
 
 	<select id="getAptInfo" resultMap="aptInfo">
@@ -103,16 +105,17 @@
 	<select id="getGugun" resultType="string">
 		select distinct gugunname 
 		from dongcode 
-		where sidoname = #{sidoname} 
-		and gugunname is not null
-		and dongname is not null
+		where sidoname = #{sidoName}
+			and gugunname is not null
+			and dongname is not null
 	</select>
 	
 	<select id="getDong" resultType="string">
 		select distinct dongname 
 		from dongcode 
-		where gugunname = #{gugunname} 
-		and dongname is not null
+		where sidoName = #{sidoName}
+			and gugunname = #{gugunName} 
+			and dongname is not null
 	</select>
 	
 </mapper>

@@ -13,8 +13,8 @@ import lombok.ToString;
 @ToString
 public class DongInfo {
 
-	private String sido;
-	private String gugun;
-	private String dong;
+	private String sidoName;
+	private String gugunName;
+	private String dongName;
 	
 }

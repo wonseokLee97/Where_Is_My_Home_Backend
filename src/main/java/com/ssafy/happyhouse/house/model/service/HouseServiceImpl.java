@@ -89,13 +89,13 @@ public class HouseServiceImpl implements HouseService {
 	}
 
 	@Override
-	public List<String> getGugun(String sidoName) throws SQLException {
-		return houseMapper.getGugun(sidoName);
+	public List<String> getGugun(DongInfo dongInfo) throws SQLException {
+		return houseMapper.getGugun(dongInfo);
 	}
 
 	@Override
-	public List<String> getDong(String gugunName) throws SQLException {
-		return houseMapper.getDong(gugunName);
+	public List<String> getDong(DongInfo dongInfo) throws SQLException {
+		return houseMapper.getDong(dongInfo);
 	}
 
 }

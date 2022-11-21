@@ -42,13 +42,13 @@ public class HomeController extends HttpServlet {
 	}
 	
 	@GetMapping("/gugun")
-	public ResponseEntity<List<String>> gugunList(String sido) throws SQLException {
-		return new ResponseEntity<List<String>>(houseService.getGugun(sido), HttpStatus.OK);
+	public ResponseEntity<List<String>> gugunList(DongInfo dongInfo) throws SQLException {
+		return new ResponseEntity<List<String>>(houseService.getGugun(dongInfo), HttpStatus.OK);
 	}
 	
 	@GetMapping("/dong")
-	public ResponseEntity<List<String>> sidoList(String gugun) throws SQLException {
-		return new ResponseEntity<List<String>>(houseService.getDong(gugun), HttpStatus.OK);
+	public ResponseEntity<List<String>> sidoList(DongInfo dongInfo) throws SQLException {
+		return new ResponseEntity<List<String>>(houseService.getDong(dongInfo), HttpStatus.OK);
 	}
 
 	@GetMapping
@@ -56,14 +56,18 @@ public class HomeController extends HttpServlet {
 		Map<String, Object> map = new HashMap<>();
 		String dongCode = houseService.getDongCode(dongInfo);
 		map.put("dongCode", dongCode);
-		System.out.println(dongCode);
 		List<AptInfo> list = houseService.getAptInfos(map);
-		System.out.println(list);
 		if (list != null && !list.isEmpty()) {
 			return new ResponseEntity<List<AptInfo>>(list, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
+	}
+	
+	@GetMapping("/{aptcode}")
+	public ResponseEntity<?> getApartInfo(@PathVariable("aptcode") String aptCode) throws SQLException {
+		AptInfo info = houseService.getAptInfo(aptCode);
+		return new ResponseEntity<AptInfo>(info, HttpStatus.OK);
 	}
 	
 	@GetMapping("/favorite")

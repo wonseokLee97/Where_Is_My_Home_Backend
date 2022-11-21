@@ -25,7 +25,7 @@ public interface HouseService {
 	List<AptDeal> getFavoriteLatest(String userId) throws SQLException;
 	
 	List<String> getSido() throws SQLException;
-	List<String> getGugun(String sidoName) throws SQLException;
-	List<String> getDong(String gugunName) throws SQLException;
+	List<String> getGugun(DongInfo dongInfo) throws SQLException;
+	List<String> getDong(DongInfo dongInfo) throws SQLException;
 	
 }
