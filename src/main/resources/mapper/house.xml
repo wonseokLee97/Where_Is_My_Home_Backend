@@ -105,6 +105,7 @@
 		from dongcode 
 		where sidoname = #{sidoname} 
 		and gugunname is not null
+		and dongname is not null
 	</select>
 	
 	<select id="getDong" resultType="string">
