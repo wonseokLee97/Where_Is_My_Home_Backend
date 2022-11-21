@@ -35,21 +35,11 @@ public class HouseServiceImpl implements HouseService {
 	
 	@Override
 	public List<AptInfo> getAptInfos(Map<String, Object> map) throws SQLException {
-//		int pgno = (int) map.get("pgno");
-//		int spl = 10;
-//		int start = (pgno-1)*spl;
-//		map.put("start", start);
-//		map.put("spl", spl);
 		return houseMapper.getAptInfos(map);
 	}
 
 	@Override
 	public List<AptDeal> getAptDeals(Map<String, Object> map) throws SQLException {
-		int pgno = (int) map.get("pgno");
-		int spl = 10;
-		int start = (pgno-1)*spl;
-		map.put("start", start);
-		map.put("spl", spl);
 		return houseMapper.getAptDeals(map);
 	}
 

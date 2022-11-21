@@ -11,9 +11,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class AptDeal extends AptInfo {
+public class AptDeal {
 
-	private String floor;
 	private String dealAmount;
+	private String dealYear;
+	private String dealMonth;
+	private String dealDay;
+	private String area;
+	private String floor;
 	
 }

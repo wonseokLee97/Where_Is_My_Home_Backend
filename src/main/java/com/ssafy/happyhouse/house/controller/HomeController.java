@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.additional.model.dto.Favorite;
+import com.ssafy.happyhouse.board.model.dto.BoardParameter;
 import com.ssafy.happyhouse.house.model.dto.AptDeal;
 import com.ssafy.happyhouse.house.model.dto.AptInfo;
 import com.ssafy.happyhouse.house.model.dto.DongInfo;
@@ -63,11 +64,33 @@ public class HomeController extends HttpServlet {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
 	}
-	
+
 	@GetMapping("/{aptcode}")
 	public ResponseEntity<?> getApartInfo(@PathVariable("aptcode") String aptCode) throws SQLException {
 		AptInfo info = houseService.getAptInfo(aptCode);
 		return new ResponseEntity<AptInfo>(info, HttpStatus.OK);
+	}
+	
+	@GetMapping("/deal/{aptcode}")
+	public ResponseEntity<?> getApartDeal(@PathVariable("aptcode") String aptCode, BoardParameter boardParameter) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		map.put("aptCode", aptCode);
+		map.put("start", boardParameter.getStart());
+		map.put("spl", boardParameter.getSpp());
+		List<AptDeal> list = houseService.getAptDeals(map);
+		if (list != null && !list.isEmpty()) {
+			return new ResponseEntity<List<AptDeal>>(list, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@GetMapping("/deal/count/{aptcode}")
+	public ResponseEntity<?> getApartDealCount(@PathVariable("aptcode") String aptCode) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		map.put("aptCode", aptCode);
+		int count = houseService.totalAptDealCount(map);
+		return new ResponseEntity<Integer>(count, HttpStatus.OK);
 	}
 	
 	@GetMapping("/favorite")

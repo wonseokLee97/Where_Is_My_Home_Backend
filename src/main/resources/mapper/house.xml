@@ -15,9 +15,13 @@
 		<result column="lat" property="lat"/>
 	</resultMap>
 	
-	<resultMap type="aptDeal" id="aptDeal" extends="aptInfo">
-		<result column="floor" property="floor"/>
+	<resultMap type="aptDeal" id="aptDeal">
 		<result column="dealamount" property="dealAmount"/>
+		<result column="dealyear" property="dealYear"/>
+		<result column="dealmonth" property="dealMonth"/>
+		<result column="dealday" property="dealDay"/>
+		<result column="area" property="area"/>
+		<result column="floor" property="floor"/>
 	</resultMap>
 	
 	<resultMap type="favorite" id="favorite">
@@ -47,16 +51,23 @@
 		where dongcode=#{dongCode}
 		order by apartmentname
 	</select>
-
+	
 	<select id="getAptDeals" resultMap="aptDeal">
-		select hi.aptCode, hi.roadname, hi.jibun, hi.apartmentname, hd.floor, hd.dealamount, hi.lng, hi.lat
+		select hd.dealamount, hd.dealyear, hd.dealmonth, hd.dealday, hd.area, hd.floor
 		from houseinfo hi natural join housedeal hd
 		<where>
-			<if test="dongCode != null">and hi.dongcode=#{dongCode}</if>
-			<if test="aptCode != null">and hi.aptcode=#{aptCode}</if>
-			and hd.dealyear=#{dealYear} and hd.dealmonth=#{dealMonth}
+			<if test="dongCode != null">
+				and hi.dongcode=#{dongCode}
+			</if>
+			<if test="aptCode != null">
+				and hi.aptcode=#{aptCode}
+			</if>
+			<if test="dealYear != null">
+				and hd.dealyear=#{dealYear} and hd.dealmonth=#{dealMonth}
+			</if>
 		</where>
-		order by hi.apartmentname desc limit ${start}, ${spl}
+		order by hd.dealyear desc, dealmonth desc, dealday desc
+		 limit #{start}, #{spl}
 	</select>
 	
 	<select id="totalAptInfoCount" resultType="int">
@@ -69,9 +80,15 @@
 		select count(*)
 		from houseinfo hi natural join housedeal hd
 		<where>
-			<if test="dongCode != null">and hi.dongcode=#{dongCode}</if>
-			<if test="aptCode != null">and hi.aptcode=#{aptCode}</if>
-			and hd.dealyear=#{dealYear} and hd.dealmonth=#{dealMonth}
+			<if test="dongCode != null">
+				and hi.dongcode=#{dongCode}
+			</if>
+			<if test="aptCode != null">
+				and hi.aptcode=#{aptCode}
+			</if>
+			<if test="dealYear != null">
+				and hd.dealyear=#{dealYear} and hd.dealmonth=#{dealMonth}
+			</if>
 		</where>
 	</select>
 	
