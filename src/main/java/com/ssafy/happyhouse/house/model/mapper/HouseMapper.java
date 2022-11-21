@@ -7,10 +7,11 @@ import java.util.Map;
 import com.ssafy.happyhouse.additional.model.dto.Favorite;
 import com.ssafy.happyhouse.house.model.dto.AptDeal;
 import com.ssafy.happyhouse.house.model.dto.AptInfo;
+import com.ssafy.happyhouse.house.model.dto.DongInfo;
 
 public interface HouseMapper {
 
-	String getDongCode(Map<String, String> map) throws SQLException;
+	String getDongCode(DongInfo dongInfo) throws SQLException;
 	AptInfo getAptInfo(String aptCode) throws SQLException;
 	List<AptInfo> getAptInfos(Map<String, Object> map) throws SQLException;
 	List<AptDeal> getAptDeals(Map<String, Object> map) throws SQLException;

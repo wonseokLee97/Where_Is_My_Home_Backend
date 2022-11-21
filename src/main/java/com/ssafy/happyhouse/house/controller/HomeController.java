@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.happyhouse.additional.model.dto.Favorite;
 import com.ssafy.happyhouse.house.model.dto.AptDeal;
 import com.ssafy.happyhouse.house.model.dto.AptInfo;
+import com.ssafy.happyhouse.house.model.dto.DongInfo;
 import com.ssafy.happyhouse.house.model.service.HouseService;
 import com.ssafy.happyhouse.member.model.dto.Member;
 import com.ssafy.happyhouse.util.ParameterCheck;
@@ -48,6 +49,21 @@ public class HomeController extends HttpServlet {
 	@GetMapping("/dong")
 	public ResponseEntity<List<String>> sidoList(String gugun) throws SQLException {
 		return new ResponseEntity<List<String>>(houseService.getDong(gugun), HttpStatus.OK);
+	}
+
+	@GetMapping
+	public ResponseEntity<?> getApartList(DongInfo dongInfo) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		String dongCode = houseService.getDongCode(dongInfo);
+		map.put("dongCode", dongCode);
+		System.out.println(dongCode);
+		List<AptInfo> list = houseService.getAptInfos(map);
+		System.out.println(list);
+		if (list != null && !list.isEmpty()) {
+			return new ResponseEntity<List<AptInfo>>(list, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
 	}
 	
 	@GetMapping("/favorite")
@@ -81,102 +97,102 @@ public class HomeController extends HttpServlet {
 		houseService.deleteFavorite(map);
 	}
 	
-	@GetMapping("alist")
-	public ResponseEntity<?> aptList(@RequestParam("dong") String dongCode, int pgno) throws SQLException {
-		Map<String, Object> map = new HashMap<>();
-		map.put("dongCode", dongCode);
-		map.put("pgno", pgno);
-		List<AptInfo> list = houseService.getAptInfos(map);
-		
-		if (list != null && !list.isEmpty()) {
-			Map<String, Object> json = new HashMap<>();
-			json.put("list", list);
-			// 페이지 정보
-			int totalRows = 0, totalPages = 1;
-			totalRows = houseService.totalAptInfoCount(dongCode);
-			totalPages = totalRows % 10 == 0 ? (totalRows / 10) : (totalRows / 10) + 1;
-			if (totalPages == 0) totalPages = 1;
-			if (pgno > totalPages) pgno = 1;
-			int currentBlock = pgno % 5 == 0 ? pgno / 5 : (pgno / 5) + 1;
-			int startPage = (currentBlock - 1) * 5 + 1;
-			int endPage = startPage + 5 - 1;
-			if (endPage > totalPages) endPage = totalPages;
-			json.put("startPage", startPage);
-			json.put("endPage", endPage);
-			json.put("cPage", pgno);
-			json.put("totalPages", totalPages);
-			return new ResponseEntity<Map<String, Object>>(json, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-		}
-	}
-
-	@GetMapping("dlist")
-	public ResponseEntity<?> dealList(@RequestParam("dong") String dongCode, int pgno, String year, String month) throws SQLException {
-		Map<String, Object> map = new HashMap<>();
-		map.put("dongCode", dongCode);
-		map.put("pgno", pgno);
-		int dealYear = ParameterCheck.notNumberToZero(year);
-		int dealMonth = ParameterCheck.notNumberToZero(month);
-		map.put("dealYear", dealYear);
-		map.put("dealMonth", dealMonth);
-		List<AptDeal> list = houseService.getAptDeals(map);
-		
-		if (list != null && !list.isEmpty()) {
-			Map<String, Object> json = new HashMap<>();
-			json.put("list", list);
-			// 페이지 정보
-			int totalRows = 0, totalPages = 1;
-			totalRows = houseService.totalAptDealCount(map);
-			totalPages = totalRows % 10 == 0 ? (totalRows / 10) : (totalRows / 10) + 1;
-			if (totalPages == 0) totalPages = 1;
-			if (pgno > totalPages) pgno = 1;
-			int currentBlock = pgno % 5 == 0 ? pgno / 5 : (pgno / 5) + 1;
-			int startPage = (currentBlock - 1) * 5 + 1;
-			int endPage = startPage + 5 - 1;
-			if (endPage > totalPages) endPage = totalPages;
-			json.put("startPage", startPage);
-			json.put("endPage", endPage);
-			json.put("cPage", pgno);
-			json.put("totalPages", totalPages);
-			return new ResponseEntity<Map<String, Object>>(json, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-		}
-	}
-
-	@GetMapping("adlist")
-	public ResponseEntity<?> apartDealList(@RequestParam("aptcode") String aptCode, int pgno, String year, String month) throws SQLException {
-		Map<String, Object> map = new HashMap<>();
-		map.put("aptCode", aptCode);
-		map.put("pgno", pgno);
-		int dealYear = ParameterCheck.notNumberToZero(year);
-		int dealMonth = ParameterCheck.notNumberToZero(month);
-		map.put("dealYear", dealYear);
-		map.put("dealMonth", dealMonth);
-		List<AptDeal> list = houseService.getAptDeals(map);
-		
-		if (list != null && !list.isEmpty()) {
-			Map<String, Object> json = new HashMap<>();
-			json.put("list", list);
-			// 페이지 정보
-			int totalRows = 0, totalPages = 1;
-			totalRows = houseService.totalAptDealCount(map);
-			totalPages = totalRows % 10 == 0 ? (totalRows / 10) : (totalRows / 10) + 1;
-			if (totalPages == 0) totalPages = 1;
-			if (pgno > totalPages) pgno = 1;
-			int currentBlock = pgno % 5 == 0 ? pgno / 5 : (pgno / 5) + 1;
-			int startPage = (currentBlock - 1) * 5 + 1;
-			int endPage = startPage + 5 - 1;
-			if (endPage > totalPages) endPage = totalPages;
-			json.put("startPage", startPage);
-			json.put("endPage", endPage);
-			json.put("cPage", pgno);
-			json.put("totalPages", totalPages);
-			return new ResponseEntity<Map<String, Object>>(json, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-		}
-	}
+//	@GetMapping("alist")
+//	public ResponseEntity<?> aptList(@RequestParam("dong") String dongCode, int pgno) throws SQLException {
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("dongCode", dongCode);
+//		map.put("pgno", pgno);
+//		List<AptInfo> list = houseService.getAptInfos(map);
+//		
+//		if (list != null && !list.isEmpty()) {
+//			Map<String, Object> json = new HashMap<>();
+//			json.put("list", list);
+//			// 페이지 정보
+//			int totalRows = 0, totalPages = 1;
+//			totalRows = houseService.totalAptInfoCount(dongCode);
+//			totalPages = totalRows % 10 == 0 ? (totalRows / 10) : (totalRows / 10) + 1;
+//			if (totalPages == 0) totalPages = 1;
+//			if (pgno > totalPages) pgno = 1;
+//			int currentBlock = pgno % 5 == 0 ? pgno / 5 : (pgno / 5) + 1;
+//			int startPage = (currentBlock - 1) * 5 + 1;
+//			int endPage = startPage + 5 - 1;
+//			if (endPage > totalPages) endPage = totalPages;
+//			json.put("startPage", startPage);
+//			json.put("endPage", endPage);
+//			json.put("cPage", pgno);
+//			json.put("totalPages", totalPages);
+//			return new ResponseEntity<Map<String, Object>>(json, HttpStatus.OK);
+//		} else {
+//			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+//		}
+//	}
+//
+//	@GetMapping("dlist")
+//	public ResponseEntity<?> dealList(@RequestParam("dong") String dongCode, int pgno, String year, String month) throws SQLException {
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("dongCode", dongCode);
+//		map.put("pgno", pgno);
+//		int dealYear = ParameterCheck.notNumberToZero(year);
+//		int dealMonth = ParameterCheck.notNumberToZero(month);
+//		map.put("dealYear", dealYear);
+//		map.put("dealMonth", dealMonth);
+//		List<AptDeal> list = houseService.getAptDeals(map);
+//		
+//		if (list != null && !list.isEmpty()) {
+//			Map<String, Object> json = new HashMap<>();
+//			json.put("list", list);
+//			// 페이지 정보
+//			int totalRows = 0, totalPages = 1;
+//			totalRows = houseService.totalAptDealCount(map);
+//			totalPages = totalRows % 10 == 0 ? (totalRows / 10) : (totalRows / 10) + 1;
+//			if (totalPages == 0) totalPages = 1;
+//			if (pgno > totalPages) pgno = 1;
+//			int currentBlock = pgno % 5 == 0 ? pgno / 5 : (pgno / 5) + 1;
+//			int startPage = (currentBlock - 1) * 5 + 1;
+//			int endPage = startPage + 5 - 1;
+//			if (endPage > totalPages) endPage = totalPages;
+//			json.put("startPage", startPage);
+//			json.put("endPage", endPage);
+//			json.put("cPage", pgno);
+//			json.put("totalPages", totalPages);
+//			return new ResponseEntity<Map<String, Object>>(json, HttpStatus.OK);
+//		} else {
+//			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+//		}
+//	}
+//
+//	@GetMapping("adlist")
+//	public ResponseEntity<?> apartDealList(@RequestParam("aptcode") String aptCode, int pgno, String year, String month) throws SQLException {
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("aptCode", aptCode);
+//		map.put("pgno", pgno);
+//		int dealYear = ParameterCheck.notNumberToZero(year);
+//		int dealMonth = ParameterCheck.notNumberToZero(month);
+//		map.put("dealYear", dealYear);
+//		map.put("dealMonth", dealMonth);
+//		List<AptDeal> list = houseService.getAptDeals(map);
+//		
+//		if (list != null && !list.isEmpty()) {
+//			Map<String, Object> json = new HashMap<>();
+//			json.put("list", list);
+//			// 페이지 정보
+//			int totalRows = 0, totalPages = 1;
+//			totalRows = houseService.totalAptDealCount(map);
+//			totalPages = totalRows % 10 == 0 ? (totalRows / 10) : (totalRows / 10) + 1;
+//			if (totalPages == 0) totalPages = 1;
+//			if (pgno > totalPages) pgno = 1;
+//			int currentBlock = pgno % 5 == 0 ? pgno / 5 : (pgno / 5) + 1;
+//			int startPage = (currentBlock - 1) * 5 + 1;
+//			int endPage = startPage + 5 - 1;
+//			if (endPage > totalPages) endPage = totalPages;
+//			json.put("startPage", startPage);
+//			json.put("endPage", endPage);
+//			json.put("cPage", pgno);
+//			json.put("totalPages", totalPages);
+//			return new ResponseEntity<Map<String, Object>>(json, HttpStatus.OK);
+//		} else {
+//			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+//		}
+//	}
 
 }

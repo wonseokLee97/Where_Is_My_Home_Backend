@@ -30,7 +30,7 @@
 	<select id="getDongCode" resultType="String">
 		select dongcode 
 		from dongcode 
-		where sidoname=#{sidoName} and gugunname=#{gugunName} and dongname=#{dongName}";
+		where sidoname=#{sido} and gugunname=#{gugun} and dongname=#{dong}
 	</select>
 
 	<select id="getAptInfo" resultMap="aptInfo">
@@ -43,7 +43,7 @@
 		select aptcode, roadname, jibun, apartmentname, lng, lat
 		from houseinfo 
 		where dongcode=#{dongCode}
-		order by apartmentname desc limit ${start}, ${spl}
+		order by apartmentname
 	</select>
 
 	<select id="getAptDeals" resultMap="aptDeal">

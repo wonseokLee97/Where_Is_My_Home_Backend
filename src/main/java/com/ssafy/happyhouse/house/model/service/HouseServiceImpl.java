@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.happyhouse.additional.model.dto.Favorite;
 import com.ssafy.happyhouse.house.model.dto.AptDeal;
 import com.ssafy.happyhouse.house.model.dto.AptInfo;
+import com.ssafy.happyhouse.house.model.dto.DongInfo;
 import com.ssafy.happyhouse.house.model.mapper.HouseMapper;
 
 @Service
@@ -23,8 +24,8 @@ public class HouseServiceImpl implements HouseService {
 	}
 	
 	@Override
-	public String getDongCode(Map<String, String> map) throws SQLException {
-		return houseMapper.getDongCode(map);
+	public String getDongCode(DongInfo dongInfo) throws SQLException {
+		return houseMapper.getDongCode(dongInfo);
 	}
 
 	@Override
@@ -34,11 +35,11 @@ public class HouseServiceImpl implements HouseService {
 	
 	@Override
 	public List<AptInfo> getAptInfos(Map<String, Object> map) throws SQLException {
-		int pgno = (int) map.get("pgno");
-		int spl = 10;
-		int start = (pgno-1)*spl;
-		map.put("start", start);
-		map.put("spl", spl);
+//		int pgno = (int) map.get("pgno");
+//		int spl = 10;
+//		int start = (pgno-1)*spl;
+//		map.put("start", start);
+//		map.put("spl", spl);
 		return houseMapper.getAptInfos(map);
 	}
 
