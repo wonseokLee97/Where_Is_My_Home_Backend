@@ -5,15 +5,21 @@
 <mapper namespace="com.ssafy.happyhouse.member.model.mapper.MemberMapper">
 
 	<resultMap type="member" id="member">
-		<result column="userId" property="userId"/>
-		<result column="userName" property="userName"/>
+		<result column="userid" property="userId"/>
+		<result column="username" property="userName"/>
 	</resultMap>
 	
 	<resultMap type="member" id="memberAll" extends="member">
-		<result column="userPwd" property="userPwd"/>
-		<result column="emailId" property="emailId"/>
-		<result column="emailDomain" property="emailDomain"/>
-		<result column="joinDate" property="joinDate"/>
+		<result column="userpwd" property="userPwd"/>
+		<result column="emailid" property="emailId"/>
+		<result column="emaildomain" property="emailDomain"/>
+		<result column="joindate" property="joinDate"/>
+		<result column="grade" property="grade"/>
+	</resultMap>
+	
+	<resultMap type="member" id="memberEmail">
+		<result column="emailid" property="emailId"/>
+		<result column="emaildomain" property="emailDomain"/>
 	</resultMap>
 
 	<select id="idCheck" resultType="int">
@@ -23,35 +29,59 @@
 	</select>
 
 	<insert id="joinMember">
-		insert into member (userName, userId, userPwd, emailId, emailDomain, joinDate)
-		values (#{userId}, #{userName}, #{userPwd}, #{emailId}, #{emailDomain}, now())
+		insert into member (userid, username, userpwd, emailid, emaildomain, joindate, grade)
+		values (#{userId}, #{userName}, #{userPwd}, #{emailId}, #{emailDomain}, now(), 'G')
 	</insert>
 
 	<select id="loginMember" resultMap="memberAll">
-		select userId, userName, userPwd, emailId, emailDomain, joinDate
+		select userid, username, userpwd, emailid, emaildomain, joindate, grade
 		from member
-		where userId = #{userId} and userPwd = #{userPwd}
+		where userid = #{userId} and userpwd = #{userPwd}
 	</select>
 	
 	<select id="getMember" resultMap="memberAll">
-		select userId, userName, userPwd, emailId, emailDomain, joinDate
+		select userid, username, userpwd, emailid, emaildomain, joindate, grade
 		from member
-		where userId = #{userId}
+		where userid = #{userId}
+	</select>
+	
+	<select id="getEmail" resultMap="memberEmail">
+		select emailid, emaildomain, userpwd
+		from member
+		where userName = #{userName}
 	</select>
 	
 	<update id="modifyMember">
 		update member
 		set 
-			userName = #{userName},
-			userPwd = #{userPwd},
-			emailId = #{emailId},
-			emailDomain = #{emailDomain}
-			where userId = #{userId}
+			username = #{userName},
+			userpwd = #{userPwd},
+			emailid = #{emailId},
+			emaildomain = #{emailDomain}
+		where userid = #{userId}
 	</update>
 	
 	<delete id="deleteMember">
 		delete from member
-		where userId = #{userId}
+		where userid = #{userId}
 	</delete>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from member
+		where userid = #{userid}
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update member
+		set token = #{token}
+		where userid = #{userid}
+	</update>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update member
+		set token = #{token, jdbcType=VARCHAR}
+		where userid = #{userid}
+	</update>
 	
 </mapper>

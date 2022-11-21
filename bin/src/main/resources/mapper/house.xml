@@ -4,26 +4,49 @@
 
 <mapper namespace="com.ssafy.happyhouse.house.model.mapper.HouseMapper">
 
+	<resultMap type="aptInfo" id="aptInfo">
+		<result column="aptcode" property="aptCode"/>
+		<result column="roadname" property="roadName"/>
+		<result column="jibun" property="jibun"/>
+		<result column="apartmentname" property="apartmentName"/>
+		<result column="dong" property="dong"/>
+		<result column="buildyear" property="buildYear"/>
+		<result column="lng" property="lng"/>
+		<result column="lat" property="lat"/>
+	</resultMap>
+	
+	<resultMap type="aptDeal" id="aptDeal" extends="aptInfo">
+		<result column="floor" property="floor"/>
+		<result column="dealamount" property="dealAmount"/>
+	</resultMap>
+	
+	<resultMap type="favorite" id="favorite">
+		<result column="sidoname" property="sidoName"/>
+		<result column="gugunname" property="gugunName"/>
+		<result column="dongname" property="dongName"/>
+		<result column="dongcode" property="dongCode"/>
+	</resultMap>
+	
 	<select id="getDongCode" resultType="String">
 		select dongcode 
 		from dongcode 
 		where sidoname=#{sidoName} and gugunname=#{gugunName} and dongname=#{dongName}";
 	</select>
 
-	<select id="getAptInfo" resultType="aptInfo">
+	<select id="getAptInfo" resultMap="aptInfo">
 		select aptcode, roadname, jibun, apartmentname, buildYear, dong, lng, lat
 		from houseinfo 
 		where aptCode=#{aptCode}
 	</select>
 	
-	<select id="getAptInfos" resultType="aptInfo">
+	<select id="getAptInfos" resultMap="aptInfo">
 		select aptcode, roadname, jibun, apartmentname, lng, lat
 		from houseinfo 
 		where dongcode=#{dongCode}
 		order by apartmentname desc limit ${start}, ${spl}
 	</select>
 
-	<select id="getAptDeals" resultType="aptDeal">
+	<select id="getAptDeals" resultMap="aptDeal">
 		select hi.aptCode, hi.roadname, hi.jibun, hi.apartmentname, hd.floor, hd.dealamount, hi.lng, hi.lat
 		from houseinfo hi natural join housedeal hd
 		<where>
@@ -50,7 +73,7 @@
 		</where>
 	</select>
 	
-	<select id="getFavorites" resultType="favorite">
+	<select id="getFavorites" resultMap="favorite">
 		select d.sidoname, d.gugunname, d.dongname, d.dongcode
 		from favorite f natural join dongcode d
 		where f.userid=#{userId}
@@ -66,27 +89,29 @@
 		where userid=#{userId} and dongcode=#{dongCode}
 	</delete>
 
-	<select id="getFavoriteLatest" resultType="aptDeal">
+	<select id="getFavoriteLatest" resultMap="aptDeal">
 		select hi.aptcode, hi.dong, hi.roadname, hi.jibun, hi.apartmentname, hd.floor, hd.dealamount
 		from houseinfo hi natural join housedeal hd natural join favorite f
 		where f.userid=#{userId} and hd.dealyear=year(now())
 	</select>
 	
 	<select id="getSido" resultType="string">
-		select distinct sidoName 
-		from dongCode
+		select distinct sidoname 
+		from dongcode
 	</select>
 	
 	<select id="getGugun" resultType="string">
-		select distinct gugunName 
-		from dongCode 
-		where sidoName = #{sidoName}
+		select distinct gugunname 
+		from dongcode 
+		where sidoname = #{sidoname} 
+		and gugunname is not null
 	</select>
 	
 	<select id="getDong" resultType="string">
-		select distinct dongName 
-		from dongCode 
-		where gugunName = #{gugunName}
+		select distinct dongname 
+		from dongcode 
+		where gugunname = #{gugunname} 
+		and dongname is not null
 	</select>
 	
 </mapper>

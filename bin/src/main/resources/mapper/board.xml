@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	
-<mapper namespace="com.ssafy.happyhouse.board.model.mapper.BoardMapper">
-	
-	<resultMap type="boardDto" id="article">
-		<result column="articleno" property="articleno"/>
-		<result column="userid" property="userid"/>
-		<result column="subject" property="subject"/>	
-		<result column="hit" property="hit"/>
-		<result column="regtime" property="regtime"/>
+
+<mapper
+	namespace="com.ssafy.happyhouse.board.model.mapper.BoardMapper">
+
+	<resultMap type="board" id="article">
+		<result column="articleno" property="articleNo" />
+		<result column="userid" property="userId" />
+		<result column="subject" property="subject" />
+		<result column="hit" property="hit" />
+		<result column="regtime" property="regtime" />
 	</resultMap>
-	
-	<resultMap  type="boardDto" id="viewArticle" extends="article">
-		<result column="content" property="content"/>
-		<collection property="comments" column="articleno" javaType="list" ofType="commentDto" select="commentList"/>
+
+	<resultMap type="board" id="viewArticle" extends="article">
+		<result column="content" property="content" />
+		<collection property="comments" column="articleNo"
+			javaType="list" ofType="comment" select="commentList" />
 	</resultMap>
-	
+
+	<resultMap type="comment" id="comment">
+		<result column="commetno" property="commetNo" />
+		<result column="articleno" property="articleNo" />
+		<result column="userid" property="userId" />
+		<result column="content" property="content" />
+		<result column="regtime" property="regtime" />
+	</resultMap>
+
 	<insert id="writeArticle">
 		insert into board (userid, subject, content, hit, regtime)
-		values (#{userid}, #{subject}, #{content}, 0, now())
+		values (#{userId}, #{subject}, #{content}, 0, now())
 	</insert>
-	
+
 	<select id="listArticle" resultMap="article">
-		select articleno, userid, subject, hit,
-				case when date_format(regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
-				then date_format(regtime, '%H:%i:%s')
-				else date_format(regtime, '%y.%m.%d')
-				end regtime
+		select articleno, userid, subject, hit, 
+			case when date_format(regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
+			then date_format(regtime, '%H:%i:%s')
+			else date_format(regtime, '%y.%m.%d')
+			end regtime
 		from board
 		<if test="word != null and word != ''">
 			<if test="key == 'subject'">
@@ -40,7 +50,7 @@
 		order by articleno desc
 		limit #{start}, #{spp}
 	</select>
-	
+
 	<select id="getTotalCount" resultType="int">
 		select count(articleno)
 		from board
@@ -53,55 +63,67 @@
 			</if>
 		</if>
 	</select>
-	
+
 	<select id="getArticle" resultMap="viewArticle">
 		select articleno, userid, subject, content, hit, regtime
 		from board
-		where articleno = #{articleno}
+		where articleno = #{articleNo}
 	</select>
-	
+
+	<select id="searchTitle" resultMap="viewArticle">
+		select articleno, userid, subject, content, hit, regtime
+		from board
+		where subject like %${subject}%'
+	</select>
+
+
+	<select id="searchWriter" resultMap="viewArticle">
+		select articleno, userid, subject, content, hit, regtime
+		from board
+		where userid = #{userId}
+	</select>
+
 	<update id="updateHit">
 		update board
 		set hit = hit + 1
-		where articleno = #{articleno}
+		where articleno = #{articleNo}
 	</update>
-	
+
 	<update id="modifyArticle">
 		update board
 		set subject = #{subject}, content = #{content}
-		where articleno = #{articleno}
+		where articleno = #{articleNo}
 	</update>
-	
+
 	<delete id="deleteArticle">
 		delete from board
-		where articleno = #{articleno}
+		where articleno = #{articleNo}
 	</delete>
 
 	<!-- ============ 댓글 CRUD =============== -->
 	<insert id="writeComment">
-		update board
-		set subject = #{subject}, content = #{content}
-		where commentno = #{articleno}
+		insert into comment (userid, articleno, content, regtime)
+		values (#{userId}, #{articleNo}, #{content}, now())
 	</insert>
-	
-	<select id="commentList" resultType="commentDto">
+
+	<select id="commentList" resultMap="comment">
 		select *
 		from comment
 		where articleno = #{articleNo}
 	</select>
-	
+
 	<update id="modifyComment">
 		update comment
 		set content = #{content}
-		where commentno = #{commentno}
+		where commentno = #{commentNo}
 	</update>
-	
+
 	<delete id="deleteComment">
 		delete from comment
-		where commentno = #{commentno}
+		where commentno = #{commentNo}
 	</delete>
 
 	<!-- ========================================== -->
-	
+
 </mapper>
 
