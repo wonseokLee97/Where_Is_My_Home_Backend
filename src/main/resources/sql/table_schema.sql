@@ -263,6 +263,7 @@ CREATE TABLE IF NOT EXISTS `happyhouse`.`store` (
   `storeno` BIGINT NOT NULL,
   `storename` VARCHAR(45) NULL DEFAULT NULL,
   `branch` VARCHAR(45) NULL DEFAULT NULL,
+  `categorymain` VARCHAR(45) NULL DEFAULT NULL,
   `category` VARCHAR(45) NULL DEFAULT NULL,
   `dongcode` VARCHAR(10) NOT NULL,
   `address` VARCHAR(100) NULL DEFAULT NULL,

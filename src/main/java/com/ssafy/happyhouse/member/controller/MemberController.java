@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.member.model.dto.MailInfo;
@@ -47,7 +46,7 @@ public class MemberController extends HttpServlet {
 	private EmailService emailService;
 	
 	@GetMapping("/idcheck")
-	public int idCheck(@RequestParam("userId") String userId) throws Exception {
+	public int idCheck(String userId) throws Exception {
 		System.out.println(userId);
 		int count = memberService.idCheck(userId);
 		return count;
