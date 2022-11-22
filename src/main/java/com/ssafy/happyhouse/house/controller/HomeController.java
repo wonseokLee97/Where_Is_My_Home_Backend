@@ -28,6 +28,8 @@ import com.ssafy.happyhouse.house.model.service.HouseService;
 import com.ssafy.happyhouse.member.model.dto.Member;
 import com.ssafy.happyhouse.util.ParameterCheck;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 @RestController
 @RequestMapping("/home")
 public class HomeController extends HttpServlet {
@@ -58,6 +60,16 @@ public class HomeController extends HttpServlet {
 		String dongCode = houseService.getDongCode(dongInfo);
 		map.put("dongCode", dongCode);
 		List<AptInfo> list = houseService.getAptInfos(map);
+		if (list != null && !list.isEmpty()) {
+			return new ResponseEntity<List<AptInfo>>(list, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@GetMapping("/lnglat")
+	public ResponseEntity<?> getApartListByLngLat(@RequestParam HashMap<String, Object> map) throws SQLException {
+		List<AptInfo> list = houseService.getAptInfosByLngLat(map);
 		if (list != null && !list.isEmpty()) {
 			return new ResponseEntity<List<AptInfo>>(list, HttpStatus.OK);
 		} else {

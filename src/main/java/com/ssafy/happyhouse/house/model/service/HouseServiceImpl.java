@@ -39,6 +39,11 @@ public class HouseServiceImpl implements HouseService {
 	}
 
 	@Override
+	public List<AptInfo> getAptInfosByLngLat(Map<String, Object> map) throws SQLException {
+		return houseMapper.getAptInfosByLngLat(map);
+	}
+	
+	@Override
 	public List<AptDeal> getAptDeals(Map<String, Object> map) throws SQLException {
 		return houseMapper.getAptDeals(map);
 	}

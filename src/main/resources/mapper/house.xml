@@ -49,9 +49,15 @@
 		select aptcode, roadname, jibun, apartmentname, lng, lat
 		from houseinfo 
 		where dongcode=#{dongCode}
-		order by apartmentname
 	</select>
 	
+	<select id="getAptInfosByLngLat" resultMap="aptInfo">
+		select aptcode, roadname, jibun, apartmentname, lng, lat
+		from houseinfo 
+		where lng between #{slng} and #{elng}
+			and lat between #{slat} and #{elat}
+	</select>
+
 	<select id="getAptDeals" resultMap="aptDeal">
 		select hd.dealamount, hd.dealyear, hd.dealmonth, hd.dealday, hd.area, hd.floor
 		from houseinfo hi natural join housedeal hd
