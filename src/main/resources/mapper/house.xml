@@ -51,6 +51,16 @@
 		where dongcode=#{dongCode}
 	</select>
 	
+	<select id="getAptInfosByDongInfo" resultMap="aptInfo">
+		select aptcode, roadname, jibun, apartmentname, lng, lat
+		from houseinfo 
+		where dongcode in (
+			select dongcode
+			from dongcode
+			where sidoname=#{sidoName} and gugunname=#{gugunName}
+		)
+	</select>
+	
 	<select id="getAptInfosByLngLat" resultMap="aptInfo">
 		select aptcode, roadname, jibun, apartmentname, lng, lat
 		from houseinfo 

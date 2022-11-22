@@ -26,9 +26,6 @@ import com.ssafy.happyhouse.house.model.dto.AptInfo;
 import com.ssafy.happyhouse.house.model.dto.DongInfo;
 import com.ssafy.happyhouse.house.model.service.HouseService;
 import com.ssafy.happyhouse.member.model.dto.Member;
-import com.ssafy.happyhouse.util.ParameterCheck;
-
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/home")
@@ -56,10 +53,8 @@ public class HomeController extends HttpServlet {
 
 	@GetMapping
 	public ResponseEntity<?> getApartList(DongInfo dongInfo) throws SQLException {
-		Map<String, Object> map = new HashMap<>();
-		String dongCode = houseService.getDongCode(dongInfo);
-		map.put("dongCode", dongCode);
-		List<AptInfo> list = houseService.getAptInfos(map);
+		System.out.println(dongInfo);
+		List<AptInfo> list = houseService.getAptInfos(dongInfo);
 		if (list != null && !list.isEmpty()) {
 			return new ResponseEntity<List<AptInfo>>(list, HttpStatus.OK);
 		} else {
@@ -67,15 +62,15 @@ public class HomeController extends HttpServlet {
 		}
 	}
 	
-	@GetMapping("/lnglat")
-	public ResponseEntity<?> getApartListByLngLat(@RequestParam HashMap<String, Object> map) throws SQLException {
-		List<AptInfo> list = houseService.getAptInfosByLngLat(map);
-		if (list != null && !list.isEmpty()) {
-			return new ResponseEntity<List<AptInfo>>(list, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-		}
-	}
+//	@GetMapping("/lnglat")
+//	public ResponseEntity<?> getApartListByLngLat(@RequestParam HashMap<String, Object> map) throws SQLException {
+//		List<AptInfo> list = houseService.getAptInfosByLngLat(map);
+//		if (list != null && !list.isEmpty()) {
+//			return new ResponseEntity<List<AptInfo>>(list, HttpStatus.OK);
+//		} else {
+//			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+//		}
+//	}
 
 	@GetMapping("/{aptcode}")
 	public ResponseEntity<?> getApartInfo(@PathVariable("aptcode") String aptCode) throws SQLException {

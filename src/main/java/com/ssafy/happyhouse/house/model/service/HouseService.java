@@ -14,6 +14,7 @@ public interface HouseService {
 	String getDongCode(DongInfo dongInfo) throws SQLException;
 	AptInfo getAptInfo(String aptCode) throws SQLException;
 	List<AptInfo> getAptInfos(Map<String, Object> map) throws SQLException;
+	List<AptInfo> getAptInfos(DongInfo dongInfo) throws SQLException;
 	List<AptInfo> getAptInfosByLngLat(Map<String, Object> map) throws SQLException;
 	List<AptDeal> getAptDeals(Map<String, Object> map) throws SQLException;
 	int totalAptInfoCount(String dongCode) throws SQLException;
