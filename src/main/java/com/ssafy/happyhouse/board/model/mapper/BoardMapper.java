@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 import com.ssafy.happyhouse.board.model.dto.Board;
 import com.ssafy.happyhouse.board.model.dto.BoardParameter;
 import com.ssafy.happyhouse.board.model.dto.Comment;
+import com.ssafy.happyhouse.board.model.dto.Qna;
+import com.ssafy.happyhouse.board.model.dto.QnaParameter;
 
 
 @Mapper
@@ -25,5 +27,6 @@ public interface BoardMapper {
 	public int deleteComment(int commentNo) throws Exception;
 	public List<Board> searchTitle(String subject);
 	public List<Board> searchWriter(String writer);
+	public List<Qna> listQna(QnaParameter qnaParameter);
 	
 }

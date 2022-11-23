@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.happyhouse.board.model.dto.Board;
 import com.ssafy.happyhouse.board.model.dto.BoardParameter;
 import com.ssafy.happyhouse.board.model.dto.Comment;
+import com.ssafy.happyhouse.board.model.dto.Qna;
+import com.ssafy.happyhouse.board.model.dto.QnaParameter;
 import com.ssafy.happyhouse.board.model.mapper.BoardMapper;
 
 @Service
@@ -86,6 +88,13 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<Board> searchWriter(String writer) throws Exception {
 		return boardMapper.searchWriter(writer);
+	}
+
+	@Override
+	public List<Qna> listQna(QnaParameter qnaParameter) throws Exception {
+		int start = qnaParameter.getPg() == 0 ? 0 : (qnaParameter.getPg() - 1) * qnaParameter.getSpp();
+		qnaParameter.setStart(start);
+		return boardMapper.listQna(qnaParameter);
 	}
 
 }

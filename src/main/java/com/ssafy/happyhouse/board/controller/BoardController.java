@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.happyhouse.board.model.dto.Board;
 import com.ssafy.happyhouse.board.model.dto.BoardParameter;
 import com.ssafy.happyhouse.board.model.dto.Comment;
+import com.ssafy.happyhouse.board.model.dto.Qna;
+import com.ssafy.happyhouse.board.model.dto.QnaParameter;
 import com.ssafy.happyhouse.board.model.service.BoardService;
 
 @RestController
@@ -32,6 +34,20 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
+	
+	@GetMapping("/qna")
+	public ResponseEntity<List<Qna>> listQna(QnaParameter qnaParameter) throws Exception {
+		logger.info("listQna - 호출 {}", qnaParameter);
+		return new ResponseEntity<List<Qna>>(boardService.listQna(qnaParameter), HttpStatus.OK);
+	}
+	
+
+	@GetMapping
+	public ResponseEntity<List<Board>> listArticle(BoardParameter boardParameter) throws Exception {
+		logger.info("listArticle - 호출 {}", boardParameter);
+		return new ResponseEntity<List<Board>>(boardService.listArticle(boardParameter), HttpStatus.OK);
+	}
+	
 	@PostMapping
 	public ResponseEntity<String> writeArticle(@RequestBody Board board) throws Exception {
 		logger.info("writeArticle - 호출");
@@ -39,12 +55,6 @@ public class BoardController {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
-	}
-
-	@GetMapping
-	public ResponseEntity<List<Board>> listArticle(BoardParameter boardParameter) throws Exception {
-		logger.info("listArticle - 호출 {}", boardParameter);
-		return new ResponseEntity<List<Board>>(boardService.listArticle(boardParameter), HttpStatus.OK);
 	}
 	
 	@GetMapping("/count")
