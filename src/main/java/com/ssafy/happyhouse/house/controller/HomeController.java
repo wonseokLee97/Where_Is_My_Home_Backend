@@ -104,25 +104,15 @@ public class HomeController extends HttpServlet {
 	}
 	
 	@GetMapping("/deal/{aptcode}")
-	public ResponseEntity<?> getApartDeal(@PathVariable("aptcode") String aptCode, BoardParameter boardParameter) throws SQLException {
+	public ResponseEntity<?> getApartDeal(@PathVariable("aptcode") String aptCode) throws SQLException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("aptCode", aptCode);
-		map.put("start", boardParameter.getStart());
-		map.put("spl", boardParameter.getSpp());
 		List<AptDeal> list = houseService.getAptDeals(map);
 		if (list != null && !list.isEmpty()) {
 			return new ResponseEntity<List<AptDeal>>(list, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
-	}
-	
-	@GetMapping("/deal/count/{aptcode}")
-	public ResponseEntity<?> getApartDealCount(@PathVariable("aptcode") String aptCode) throws SQLException {
-		Map<String, Object> map = new HashMap<>();
-		map.put("aptCode", aptCode);
-		int count = houseService.totalAptDealCount(map);
-		return new ResponseEntity<Integer>(count, HttpStatus.OK);
 	}
 	
 	@GetMapping("/favorite")

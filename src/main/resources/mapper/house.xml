@@ -72,9 +72,6 @@
 		select hd.dealamount, hd.dealyear, hd.dealmonth, hd.dealday, hd.area, hd.floor
 		from houseinfo hi natural join housedeal hd
 		<where>
-			<if test="dongCode != null">
-				and hi.dongcode=#{dongCode}
-			</if>
 			<if test="aptCode != null">
 				and hi.aptcode=#{aptCode}
 			</if>
@@ -83,7 +80,6 @@
 			</if>
 		</where>
 		order by hd.dealyear desc, dealmonth desc, dealday desc
-		 limit #{start}, #{spl}
 	</select>
 	
 	<select id="totalAptInfoCount" resultType="int">
