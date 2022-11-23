@@ -11,11 +11,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Store {
+public class StoreInfo {
 
-	private String storeName;
-	private String lng;
-	private String lat;
-	private String distance;
+	String categoryMain;
+	int count;
 	
 }

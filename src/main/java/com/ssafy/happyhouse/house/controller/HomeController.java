@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.additional.model.dto.Favorite;
+import com.ssafy.happyhouse.additional.model.dto.Store;
+import com.ssafy.happyhouse.additional.model.dto.StoreInfo;
+import com.ssafy.happyhouse.additional.model.mapper.AdditionalMapper;
 import com.ssafy.happyhouse.board.model.dto.BoardParameter;
 import com.ssafy.happyhouse.house.model.dto.AptDeal;
 import com.ssafy.happyhouse.house.model.dto.AptInfo;
@@ -35,6 +38,8 @@ public class HomeController extends HttpServlet {
 
 	@Autowired
 	private HouseService houseService;
+	@Autowired
+	private AdditionalMapper additionalMapper;
 	
 	@GetMapping("/sido")
 	public ResponseEntity<List<String>> sidoList() throws SQLException {
@@ -71,7 +76,27 @@ public class HomeController extends HttpServlet {
 //			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 //		}
 //	}
+	
+	@GetMapping("/storeinfo")
+	public ResponseEntity<?> getStoreInfo(@RequestParam Map<String, Object> map) throws SQLException {
+		List<StoreInfo> list = additionalMapper.getStoreInfo(map);
+		if (list != null && !list.isEmpty()) {
+			return new ResponseEntity<List<StoreInfo>>(list, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
 
+	@GetMapping("/storelist")
+	public ResponseEntity<?> getStoreList(@RequestParam Map<String, Object> map) throws SQLException {
+		List<Store> list = additionalMapper.getStoreList(map);
+		if (list != null && !list.isEmpty()) {
+			return new ResponseEntity<List<Store>>(list, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
 	@GetMapping("/{aptcode}")
 	public ResponseEntity<?> getApartInfo(@PathVariable("aptcode") String aptCode) throws SQLException {
 		AptInfo info = houseService.getAptInfo(aptCode);
