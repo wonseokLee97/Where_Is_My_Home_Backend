@@ -36,6 +36,30 @@
 		from store
 		having distance &lt;= #{distance}
 	</select>
+	
+	<select id="getFavoriteApts" resultType="Map">
+		select hi.aptcode, hi.apartmentname
+		from favoriteapt fa
+		natural join houseinfo hi
+		where userid=#{userId}
+	</select>
+	
+	<select id="isFavoriteApt" resultType="int">
+		select count(*)
+		from favoriteapt
+		where userid=#{userId}
+		and aptcode=#{aptCode}
+	</select>
 
+	<insert id="addFavoriteApt">
+		insert into favoriteapt
+		values(#{userId}, #{aptCode})
+	</insert>
+	
+	<delete id="removeFavoriteApt">
+		delete from favoriteapt
+		where userid=#{userId} and aptcode=#{aptCode}
+	</delete>
+	
 </mapper>
 

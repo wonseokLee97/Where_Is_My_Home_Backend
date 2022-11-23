@@ -145,6 +145,26 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
+-- Table `happyhouse`.`favoriteapt`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `happyhouse`.`favoriteapt` (
+  `userid` VARCHAR(15) NOT NULL,
+  `aptcode` BIGINT NOT NULL,
+  PRIMARY KEY (`userid`, `aptcode`),
+  INDEX `favoriteapt_to_houseinfo_fk_idx` (`aptcode` ASC) VISIBLE,
+  CONSTRAINT `favoriteapt_to_member_fk`
+    FOREIGN KEY (`userid`)
+    REFERENCES `happyhouse`.`member` (`userid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `favoriteapt_to_houseinfo_fk`
+    FOREIGN KEY (`aptcode`)
+    REFERENCES `happyhouse`.`houseinfo` (`aptcode`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+
+-- -----------------------------------------------------
 -- Table `happyhouse`.`guguncode`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `happyhouse`.`guguncode` (

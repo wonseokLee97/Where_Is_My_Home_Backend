@@ -1,6 +1,7 @@
 package com.ssafy.happyhouse.additional.service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,5 +26,25 @@ public class AdditionalServiceImpl implements AdditionalService {
 	@Override
 	public List<Store> getStoreList(Map<String, Object> map) throws SQLException {
 		return additionalMapper.getStoreList(map);
+	}
+	
+	@Override
+	public List<HashMap<String, Object>> getFavoriteApts(String userId) throws SQLException {
+		return additionalMapper.getFavoriteApts(userId);
+	}
+
+	@Override
+	public int isFavoriteApt(Map<String, Object> map) throws SQLException {
+		return additionalMapper.isFavoriteApt(map);
+	}
+
+	@Override
+	public int addFavoriteApt(Map<String, Object> map) throws SQLException {
+		return additionalMapper.addFavoriteApt(map);
+	}
+
+	@Override
+	public int removeFavoriteApt(Map<String, Object> map) throws SQLException {
+		return additionalMapper.removeFavoriteApt(map);
 	}
 }

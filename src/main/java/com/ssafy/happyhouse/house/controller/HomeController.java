@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,31 +14,31 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.happyhouse.additional.model.dto.Favorite;
 import com.ssafy.happyhouse.additional.model.dto.Store;
 import com.ssafy.happyhouse.additional.model.dto.StoreInfo;
-import com.ssafy.happyhouse.additional.model.mapper.AdditionalMapper;
-import com.ssafy.happyhouse.board.model.dto.BoardParameter;
+import com.ssafy.happyhouse.additional.service.AdditionalService;
 import com.ssafy.happyhouse.house.model.dto.AptDeal;
 import com.ssafy.happyhouse.house.model.dto.AptInfo;
 import com.ssafy.happyhouse.house.model.dto.DongInfo;
 import com.ssafy.happyhouse.house.model.service.HouseService;
-import com.ssafy.happyhouse.member.model.dto.Member;
 
 @RestController
 @RequestMapping("/home")
 public class HomeController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
+	
+	private static final String SUCCESS = "success";
 
 	@Autowired
 	private HouseService houseService;
 	@Autowired
-	private AdditionalMapper additionalMapper;
+	private AdditionalService additionalService;
 	
 	@GetMapping("/sido")
 	public ResponseEntity<List<String>> sidoList() throws SQLException {
@@ -79,7 +78,7 @@ public class HomeController extends HttpServlet {
 	
 	@GetMapping("/storeinfo")
 	public ResponseEntity<?> getStoreInfo(@RequestParam Map<String, Object> map) throws SQLException {
-		List<StoreInfo> list = additionalMapper.getStoreInfo(map);
+		List<StoreInfo> list = additionalService.getStoreInfo(map);
 		if (list != null && !list.isEmpty()) {
 			return new ResponseEntity<List<StoreInfo>>(list, HttpStatus.OK);
 		} else {
@@ -89,7 +88,7 @@ public class HomeController extends HttpServlet {
 
 	@GetMapping("/storelist")
 	public ResponseEntity<?> getStoreList(@RequestParam Map<String, Object> map) throws SQLException {
-		List<Store> list = additionalMapper.getStoreList(map);
+		List<Store> list = additionalService.getStoreList(map);
 		if (list != null && !list.isEmpty()) {
 			return new ResponseEntity<List<Store>>(list, HttpStatus.OK);
 		} else {
@@ -114,37 +113,65 @@ public class HomeController extends HttpServlet {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
 	}
-	
-	@GetMapping("/favorite")
-	public ResponseEntity<?> favorite(HttpSession session) throws SQLException {
-		Member member = (Member) session.getAttribute("userinfo");
-		houseService.getFavorites(member.getUserId());
-		List<Favorite> list = houseService.getFavorites(member.getUserId());
-		
+
+	@GetMapping("/favoriteapt/{userid}")
+	public ResponseEntity<?> getFavoriteApts(@PathVariable("userid") String userId) throws SQLException {
+		List<HashMap<String, Object>> list = additionalService.getFavoriteApts(userId);
 		if (list != null && !list.isEmpty()) {
-			return new ResponseEntity<List<Favorite>>(list, HttpStatus.OK);
+			return new ResponseEntity<List<HashMap<String, Object>>>(list, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
 	}
 	
-	@PostMapping("/favorite")
-	public void favorite(@RequestParam("dong") String dongCode, HttpSession session) throws SQLException {
-		Map<String, String> map = new HashMap<>();
-		Member member = (Member) session.getAttribute("userinfo");
-		map.put("dongCode", dongCode);
-		map.put("userId", member.getUserId());
-		houseService.addFavorite(map);
+	@GetMapping("/favoriteapt")
+	public ResponseEntity<?> checkFavoriteApt(@RequestParam Map<String, Object> map) throws SQLException {
+		int result = additionalService.isFavoriteApt(map);
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	}
+
+	@PostMapping("/favoriteapt")
+	public ResponseEntity<?> addFavoriteApt(@RequestBody Map<String, Object> map) throws SQLException {
+		additionalService.addFavoriteApt(map);
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/favorite/{id}")
-	public void delete(@PathVariable ("id") String dongCode, HttpSession session) throws SQLException {
-		Map<String, String> map = new HashMap<String, String>();
-		Member member = (Member) session.getAttribute("userinfo");
-		map.put("dongCode", dongCode);
-		map.put("userId", member.getUserId());
-		houseService.deleteFavorite(map);
+	@DeleteMapping("/favoriteapt")
+	public ResponseEntity<?> removeFavoriteApt(@RequestParam Map<String, Object> map) throws SQLException {
+		additionalService.removeFavoriteApt(map);
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
+	
+//	@GetMapping("/favorite")
+//	public ResponseEntity<?> favorite(HttpSession session) throws SQLException {
+//		Member member = (Member) session.getAttribute("userinfo");
+//		houseService.getFavorites(member.getUserId());
+//		List<Favorite> list = houseService.getFavorites(member.getUserId());
+//		
+//		if (list != null && !list.isEmpty()) {
+//			return new ResponseEntity<List<Favorite>>(list, HttpStatus.OK);
+//		} else {
+//			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+//		}
+//	}
+//	
+//	@PostMapping("/favorite")
+//	public void favorite(@RequestParam("dong") String dongCode, HttpSession session) throws SQLException {
+//		Map<String, String> map = new HashMap<>();
+//		Member member = (Member) session.getAttribute("userinfo");
+//		map.put("dongCode", dongCode);
+//		map.put("userId", member.getUserId());
+//		houseService.addFavorite(map);
+//	}
+//	
+//	@DeleteMapping("/favorite/{id}")
+//	public void delete(@PathVariable ("id") String dongCode, HttpSession session) throws SQLException {
+//		Map<String, String> map = new HashMap<String, String>();
+//		Member member = (Member) session.getAttribute("userinfo");
+//		map.put("dongCode", dongCode);
+//		map.put("userId", member.getUserId());
+//		houseService.deleteFavorite(map);
+//	}
 	
 //	@GetMapping("alist")
 //	public ResponseEntity<?> aptList(@RequestParam("dong") String dongCode, int pgno) throws SQLException {
