@@ -1,6 +1,9 @@
 -> 참고해서 mysql 오픈
 https://passwd.tistory.com/entry/MySQL-ERROR-2068-HY000-at-line-2-LOAD-DATA-LOCAL-INFILE-file-request-rejected-due-to-restrictions-on-access
 
+mysql --local-infile -u <USERNAME> -p <PASSWD> 
+use happyhouse;
+
 LOAD DATA LOCAL INFILE './all.csv' 
 INTO TABLE store 
 FIELDS TERMINATED BY ',' 
