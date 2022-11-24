@@ -97,7 +97,7 @@ public class MemberController extends HttpServlet {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@PostMapping("/join")
+	@PostMapping
 	public ResponseEntity<String> join(@RequestBody Member member) throws Exception {
 		memberService.joinMember(member);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
