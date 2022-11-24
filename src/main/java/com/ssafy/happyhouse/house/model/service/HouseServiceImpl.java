@@ -64,6 +64,17 @@ public class HouseServiceImpl implements HouseService {
 	}
 	
 	@Override
+	public List<String> searchApart(String word) throws SQLException {
+		return houseMapper.searchApart(word);
+	}
+
+
+	@Override
+	public List<AptInfo> getAptInfosByName(String word) throws SQLException {
+		return houseMapper.getAptInfosByName(word);
+	}
+	
+	@Override
 	public List<Favorite>  getFavorites(String userId) throws SQLException {
 		return houseMapper.getFavorites(userId);
 	}

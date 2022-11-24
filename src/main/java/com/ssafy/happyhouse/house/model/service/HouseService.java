@@ -20,6 +20,9 @@ public interface HouseService {
 	int totalAptInfoCount(String dongCode) throws SQLException;
 	int totalAptDealCount(Map<String, Object> map) throws SQLException;
 	
+	List<String> searchApart(String word) throws SQLException;
+	List<AptInfo> getAptInfosByName(String word) throws SQLException;
+	
 	List<Favorite> getFavorites(String userId) throws SQLException;
 	boolean addFavorite(Map<String, String> map) throws SQLException;
 	boolean deleteFavorite(Map<String, String> map) throws SQLException;

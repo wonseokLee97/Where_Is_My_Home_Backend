@@ -114,6 +114,26 @@ public class HomeController extends HttpServlet {
 		}
 	}
 
+	@GetMapping("/getaptnames")
+	public ResponseEntity<?> getApartNames(@RequestParam String word) throws SQLException {
+		List<String> list = houseService.searchApart(word);
+		if (word.length() > 0 && list != null && !list.isEmpty()) {
+			return new ResponseEntity<List<String>>(list, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
+
+	@GetMapping("/getaptinfo")
+	public ResponseEntity<?> getAptInfosByName(@RequestParam String word) throws SQLException {
+		List<AptInfo> list = houseService.getAptInfosByName(word);
+		if (word.length() > 0 && list != null && !list.isEmpty()) {
+			return new ResponseEntity<List<AptInfo>>(list, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
+
 	@GetMapping("/favoriteapt/{userid}")
 	public ResponseEntity<?> getFavoriteApts(@PathVariable("userid") String userId) throws SQLException {
 		List<HashMap<String, Object>> list = additionalService.getFavoriteApts(userId);

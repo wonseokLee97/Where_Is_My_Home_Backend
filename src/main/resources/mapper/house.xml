@@ -147,4 +147,16 @@
 			and dongname is not null
 	</select>
 	
+	<select id="searchApart" resultType="String">
+		select apartmentname 
+		from houseinfo 
+		where apartmentname like concat(#{word}, "%") limit 5;
+	</select>
+	
+	<select id="getAptInfosByName" resultMap="aptInfo">
+		select aptcode, roadname, jibun, apartmentname, lng, lat 
+		from houseinfo 
+		where apartmentname like concat("%", #{word}, "%");
+	</select>
+	
 </mapper>
