@@ -13,6 +13,7 @@ import lombok.ToString;
 @ToString
 public class Store {
 
+	private String categoryMain;
 	private String storeName;
 	private String lng;
 	private String lat;
