@@ -7,6 +7,7 @@ import com.ssafy.happyhouse.board.model.dto.Board;
 import com.ssafy.happyhouse.board.model.dto.BoardParameter;
 import com.ssafy.happyhouse.board.model.dto.Comment;
 import com.ssafy.happyhouse.board.model.dto.Qna;
+import com.ssafy.happyhouse.board.model.dto.QnaComment;
 import com.ssafy.happyhouse.board.model.dto.QnaParameter;
 
 public interface BoardService {
@@ -23,5 +24,8 @@ public interface BoardService {
 	public boolean deleteComment(int commentNo) throws Exception;
 	public List<Board> searchTitle(String subject) throws Exception;
 	public List<Board> searchWriter(String writer) throws Exception;
-	public List<Qna> listQna(QnaParameter qnaParameter) throws Exception;
+	public List<Qna> listQna();
+	public boolean writeQna(Qna qna) throws Exception;
+	public Integer getQnaCount(QnaParameter qnaParameter);
+	public boolean writeQnaComment(QnaComment qnaComment) throws Exception;
 }

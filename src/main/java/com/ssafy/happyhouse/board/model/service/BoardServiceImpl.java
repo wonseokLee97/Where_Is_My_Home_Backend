@@ -11,6 +11,7 @@ import com.ssafy.happyhouse.board.model.dto.Board;
 import com.ssafy.happyhouse.board.model.dto.BoardParameter;
 import com.ssafy.happyhouse.board.model.dto.Comment;
 import com.ssafy.happyhouse.board.model.dto.Qna;
+import com.ssafy.happyhouse.board.model.dto.QnaComment;
 import com.ssafy.happyhouse.board.model.dto.QnaParameter;
 import com.ssafy.happyhouse.board.model.mapper.BoardMapper;
 
@@ -19,6 +20,36 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Autowired
 	private BoardMapper boardMapper;
+	
+
+	@Override
+	public List<Qna> listQna() {
+		return boardMapper.listQna();
+	}
+	
+	@Override
+	public boolean writeQna(Qna qna) throws Exception {
+		if(qna.getSubject() == null || qna.getContent() == null) {
+			throw new Exception();
+		}
+		return boardMapper.writeQna(qna) == 1;
+	}
+	
+
+	@Override
+	public boolean writeQnaComment(QnaComment qnaComment) throws Exception {
+		if(qnaComment.getContent() == null) {
+			throw new Exception();
+		}
+		return boardMapper.writeQnaComment(qnaComment) == 1;
+	}
+
+	@Override
+	public List<Board> listArticle(BoardParameter boardParameter) throws Exception {
+		int start = boardParameter.getPg() == 0 ? 0 : (boardParameter.getPg() - 1) * boardParameter.getSpp();
+		boardParameter.setStart(start);
+		return boardMapper.listArticle(boardParameter);
+	}
 	
 	@Override
 	public boolean writeArticle(Board board) throws Exception {
@@ -29,15 +60,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<Board> listArticle(BoardParameter boardParameter) throws Exception {
-		int start = boardParameter.getPg() == 0 ? 0 : (boardParameter.getPg() - 1) * boardParameter.getSpp();
-		boardParameter.setStart(start);
-		return boardMapper.listArticle(boardParameter);
-	}
-
-	@Override
 	public int getTotalCount(BoardParameter boardParameter) throws SQLException {
 		return boardMapper.getTotalCount(boardParameter);
+	}
+	
+	@Override
+	public Integer getQnaCount(QnaParameter qnaParameter) {
+		return boardMapper.getQnaCount(qnaParameter);
 	}
 
 	@Override
@@ -90,11 +119,5 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.searchWriter(writer);
 	}
 
-	@Override
-	public List<Qna> listQna(QnaParameter qnaParameter) throws Exception {
-		int start = qnaParameter.getPg() == 0 ? 0 : (qnaParameter.getPg() - 1) * qnaParameter.getSpp();
-		qnaParameter.setStart(start);
-		return boardMapper.listQna(qnaParameter);
-	}
 
 }

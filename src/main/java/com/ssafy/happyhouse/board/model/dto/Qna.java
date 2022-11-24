@@ -15,8 +15,10 @@ import lombok.ToString;
 @ToString
 public class Qna {
 	private int articleNo;
+	private boolean state;
 	private String userId;
 	private String subject;
 	private String content;
 	private String regtime;
+	private String comment;
 }

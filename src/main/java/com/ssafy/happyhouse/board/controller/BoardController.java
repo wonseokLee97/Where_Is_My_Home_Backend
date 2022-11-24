@@ -20,6 +20,7 @@ import com.ssafy.happyhouse.board.model.dto.Board;
 import com.ssafy.happyhouse.board.model.dto.BoardParameter;
 import com.ssafy.happyhouse.board.model.dto.Comment;
 import com.ssafy.happyhouse.board.model.dto.Qna;
+import com.ssafy.happyhouse.board.model.dto.QnaComment;
 import com.ssafy.happyhouse.board.model.dto.QnaParameter;
 import com.ssafy.happyhouse.board.model.service.BoardService;
 
@@ -36,11 +37,33 @@ public class BoardController {
 	
 	
 	@GetMapping("/qna")
-	public ResponseEntity<List<Qna>> listQna(QnaParameter qnaParameter) throws Exception {
-		logger.info("listQna - 호출 {}", qnaParameter);
-		return new ResponseEntity<List<Qna>>(boardService.listQna(qnaParameter), HttpStatus.OK);
+	public ResponseEntity<List<Qna>> listQna() throws Exception {
+		logger.info("listQna - 호출 {}");
+		return new ResponseEntity<List<Qna>>(boardService.listQna(), HttpStatus.OK);
 	}
 	
+	@PostMapping("/qna")
+	public ResponseEntity<String> writeQna(@RequestBody Qna qna) throws Exception {
+		logger.info("writeQna - 호출");		
+		if (boardService.writeQna(qna)) {
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+	
+	@PutMapping("/qna/comment")
+	public ResponseEntity<String> writeQnaComment (@RequestBody QnaComment qnaComment) throws Exception {
+		logger.info("writeComment - 호출");
+		System.out.println(qnaComment);
+		if (boardService.writeQnaComment(qnaComment)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+	}
+	
+	
+	
+	// ====================
 
 	@GetMapping
 	public ResponseEntity<List<Board>> listArticle(BoardParameter boardParameter) throws Exception {
@@ -51,6 +74,8 @@ public class BoardController {
 	@PostMapping
 	public ResponseEntity<String> writeArticle(@RequestBody Board board) throws Exception {
 		logger.info("writeArticle - 호출");
+		System.out.println(board);
+
 		if (boardService.writeArticle(board)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
