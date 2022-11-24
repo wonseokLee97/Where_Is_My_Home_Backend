@@ -97,7 +97,7 @@ public class MemberController extends HttpServlet {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@PostMapping
+	@PostMapping("/join")
 	public ResponseEntity<String> join(@RequestBody Member member) throws Exception {
 		memberService.joinMember(member);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
@@ -141,8 +141,6 @@ public class MemberController extends HttpServlet {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
-	//
-
 	@GetMapping("/info/{userid}")
 	public ResponseEntity<Map<String, Object>> getInfo(
 			@PathVariable("userid") String userid,

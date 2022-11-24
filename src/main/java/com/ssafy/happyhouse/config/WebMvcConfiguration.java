@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -14,14 +15,19 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
+import com.ssafy.happyhouse.interceptor.JwtInterceptor;
+
 @Configuration
 @EnableAspectJAutoProxy
 @MapperScan(basePackages = { "com.ssafy.happyhouse.**.mapper" }) // ** 모든 depth
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
-	private final List<String> patterns = Arrays.asList("/user/*", "/home/*");
-	private final List<String> expatterns = Arrays.asList("/", "/user/login", "/user/findpw", "/user/join", "/user/home", "/user/idcheck");
+	private final List<String> patterns = Arrays.asList("/user/*", "/home/*", "/board/*");
+	private final List<String> expatterns = Arrays.asList("/user/login", "/user/findpw", "/user/join", "/user/idcheck", "/user/email", "/user/{userid}");
 
+	@Autowired
+	private JwtInterceptor jwtInterceptor;
+	
 	private final String uploadFilePath;
 
 	public WebMvcConfiguration(@Value("${file.path.upload-files}") String uploadFilePath) {
@@ -41,7 +47,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
 //	@Override
 //	public void addInterceptors(InterceptorRegistry registry) {
-//		registry.addInterceptor(confirmInterceptor)
+//		registry.addInterceptor(jwtInterceptor)
 //			.addPathPatterns(patterns)
 //			.excludePathPatterns(expatterns);
 //	}

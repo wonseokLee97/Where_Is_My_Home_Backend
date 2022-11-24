@@ -26,6 +26,8 @@ public static final Logger logger = LoggerFactory.getLogger(JwtInterceptor.class
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		final String token = request.getHeader(HEADER_AUTH);
+		System.out.println(request.getHeader("access-token"));
+		System.out.println(request.getHeader("auth-token"));
 
 		if(token != null && jwtService.checkToken(token)){
 			logger.info("토큰 사용 가능 : {}", token);
