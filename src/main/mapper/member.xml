@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.happyhouse.member.model.mapper.MemberMapper">
+
+	<resultMap type="member" id="member">
+		<result column="userid" property="userId"/>
+		<result column="username" property="userName"/>
+	</resultMap>
+	
+	<resultMap type="member" id="memberAll" extends="member">
+		<result column="userpwd" property="userPwd"/>
+		<result column="emailid" property="emailId"/>
+		<result column="emaildomain" property="emailDomain"/>
+		<result column="joindate" property="joinDate"/>
+		<result column="grade" property="grade"/>
+	</resultMap>
+	
+	<resultMap type="member" id="memberEmail">
+		<result column="emailid" property="emailId"/>
+		<result column="emaildomain" property="emailDomain"/>
+	</resultMap>
+
+	<select id="idCheck" resultType="int">
+		select count(userId)
+		from member
+		where userId = #{userId}
+	</select>
+
+	<insert id="joinMember">
+		insert into member (userid, username, userpwd, emailid, emaildomain, joindate, grade)
+		values (#{userId}, #{userName}, #{userPwd}, #{emailId}, #{emailDomain}, now(), 'G')
+	</insert>
+
+	<select id="loginMember" resultMap="memberAll">
+		select userid, username, userpwd, emailid, emaildomain, joindate, grade
+		from member
+		where userid = #{userId} and userpwd = #{userPwd}
+	</select>
+	
+	<select id="getMember" resultMap="memberAll">
+		select userid, username, userpwd, emailid, emaildomain, joindate, grade
+		from member
+		where userid = #{userId}
+	</select>
+	
+	<select id="getEmail" resultMap="memberEmail">
+		select emailid, emaildomain, userpwd
+		from member
+		where userName = #{userName}
+	</select>
+	
+	<update id="modifyMember">
+		update member
+		set 
+			username = #{userName},
+			userpwd = #{userPwd},
+			emailid = #{emailId},
+			emaildomain = #{emailDomain}
+		where userid = #{userId}
+	</update>
+	
+	<delete id="deleteMember">
+		delete from member
+		where userid = #{userId}
+	</delete>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from member
+		where userid = #{userid}
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update member
+		set token = #{token}
+		where userid = #{userid}
+	</update>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update member
+		set token = #{token, jdbcType=VARCHAR}
+		where userid = #{userid}
+	</update>
+	
+</mapper>
